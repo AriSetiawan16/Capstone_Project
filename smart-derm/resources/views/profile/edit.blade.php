@@ -2,24 +2,6 @@
 
 @section('content')
 <div class="profile-container">
-    <!-- Header -->
-    <header class="profile-header">
-        <div class="container">
-            <div class="breadcrumb">
-                <a href="{{ route('dashboard') }}" class="breadcrumb-link">
-                    <i class="fas fa-home"></i>
-                    Dashboard
-                </a>
-                <span class="breadcrumb-separator">/</span>
-                <a href="{{ route('profile.index') }}" class="breadcrumb-link">Profil</a>
-                <span class="breadcrumb-separator">/</span>
-                <span class="breadcrumb-current">Edit</span>
-            </div>
-            <h1>Edit Profil</h1>
-            <p class="subtitle">Perbarui informasi pribadi Anda</p>
-        </div>
-    </header>
-
     <!-- Alert Messages -->
     @if(session('success'))
         <div class="container">
@@ -64,19 +46,19 @@
                     <!-- Profile Photo Section -->
                     <div class="photo-section">
                         <div class="profile-photo-container">
-                            <img src="{{ Auth::user()->profile_photo ? asset('storage/' . Auth::user()->profile_photo) : asset('images/default-avatar.png') }}"
+                            <img src="{{ Auth::user()->profile_photo ? asset('storage/' . Auth::user()->profile_photo) : asset('images/avatar.jpg') }}"
                                  alt="Profile Photo" id="profile-display-image" class="profile-photo">
                             <div class="photo-overlay">
                                 <button type="button" class="photo-btn" onclick="document.getElementById('profile_photo').click()">
                                     <i class="fas fa-camera"></i>
                                     Ubah Foto
                                 </button>
-                                @if(Auth::user()->profile_photo)
-                                    <button type="button" class="photo-btn delete-btn" onclick="deletePhoto()">
-                                        <i class="fas fa-trash"></i>
-                                        Hapus Foto
-                                    </button>
-                                @endif
+                                <button type="button" class="photo-btn delete-btn" id="delete-photo-btn"
+                                        onclick="deletePhoto()"
+                                        style="{{ Auth::user()->profile_photo ? 'display: block;' : 'display: none;' }}">
+                                    <i class="fas fa-trash"></i>
+                                    Hapus Foto
+                                </button>
                             </div>
                         </div>
                         <div class="photo-info">
@@ -191,6 +173,100 @@
         </div>
     </main>
 </div>
+
+<!-- Add CSRF token meta tag for JavaScript -->
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
+<!-- JavaScript Functions -->
+<script>
+    // Definisi variabel global
+    window.deletePhotoUrl = "{{ route('profile.delete-photo') }}";
+    window.defaultAvatar = "{{ asset('images/avatar.jpg') }}";
+
+    function previewImage(input) {
+        console.log('previewImage called');
+        const file = input.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('profile-display-image').src = e.target.result;
+                // Show delete button when new image is selected
+                document.getElementById('delete-photo-btn').style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function deletePhoto() {
+        console.log('deletePhoto function called');
+
+        if (confirm("Yakin ingin menghapus foto profil?")) {
+            // Get CSRF token
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+
+            // Show loading state
+            const deleteBtn = document.getElementById('delete-photo-btn');
+            const originalText = deleteBtn.innerHTML;
+            deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menghapus...';
+            deleteBtn.disabled = true;
+
+            console.log('Making request to:', window.deletePhotoUrl);
+
+            fetch(window.deletePhotoUrl, {
+                method: "DELETE",
+                headers: {
+                    "X-CSRF-TOKEN": csrfToken,
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+            })
+            .then(response => {
+                console.log('Response status:', response.status);
+                if (!response.ok) {
+                    throw new Error("Gagal menghapus foto. Status: " + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Response data:', data);
+                if (data.success) {
+                    // Update image to default avatar
+                    document.getElementById('profile-display-image').src = window.defaultAvatar;
+
+                    // Hide delete button
+                    deleteBtn.style.display = 'none';
+
+                    // Reset file input
+                    document.getElementById('profile_photo').value = '';
+
+                    alert(data.message);
+
+                    // Refresh halaman untuk memastikan perubahan tersimpan
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
+                } else {
+                    throw new Error(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("Terjadi kesalahan saat menghapus foto: " + error.message);
+            })
+            .finally(() => {
+                // Reset button state
+                deleteBtn.innerHTML = originalText;
+                deleteBtn.disabled = false;
+            });
+        }
+    }
+
+    // Pastikan fungsi tersedia secara global
+    window.deletePhoto = deletePhoto;
+    window.previewImage = previewImage;
+
+    console.log('JavaScript loaded successfully');
+</script>
 
 @vite(['resources/css/profile.css', 'resources/js/profile.js'])
 @endsection

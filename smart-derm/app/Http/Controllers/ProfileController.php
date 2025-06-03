@@ -71,9 +71,15 @@ class ProfileController extends Controller
             Storage::disk('public')->delete($user->profile_photo);
             $user->update(['profile_photo' => null]);
 
-            return response()->json(['message' => 'Foto profil berhasil dihapus!']);
+            return response()->json([
+                'success' => true,
+                'message' => 'Foto profil berhasil dihapus!'
+            ]);
         }
 
-        return response()->json(['message' => 'Tidak ada foto untuk dihapus.'], 400);
+        return response()->json([
+            'success' => false,
+            'message' => 'Tidak ada foto untuk dihapus.'
+        ], 400);
     }
 }

@@ -34,78 +34,7 @@ body {
 /* Profile Container */
 .profile-container {
     min-height: 100vh;
-    padding-top: 100px;
-}
-
-/* Header Styles */
-.profile-header {
-    background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 50%, #80deea 100%);
-    padding: 60px 0;
-    position: relative;
-    overflow: hidden;
-}
-
-.profile-header::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') center/cover;
-    opacity: 0.05;
-    z-index: 0;
-}
-
-.profile-header .container {
-    position: relative;
-    z-index: 1;
-}
-
-/* Breadcrumb */
-.breadcrumb {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
-    font-size: 0.9rem;
-}
-
-.breadcrumb-link {
-    color: var(--primary-dark);
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    transition: var(--transition);
-}
-
-.breadcrumb-link:hover {
-    color: var(--secondary);
-}
-
-.breadcrumb-separator {
-    color: var(--text-light);
-}
-
-.breadcrumb-current {
-    color: var(--text);
-    font-weight: 500;
-}
-
-/* Header Content */
-.profile-header h1 {
-    font-size: 2.5rem;
-    font-weight: 600;
-    color: var(--secondary);
-    margin-bottom: 10px;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.profile-header .subtitle {
-    font-size: 1.1rem;
-    color: var(--text-light);
-    margin-bottom: 0;
+    padding-top: 20px;
 }
 
 /* Alert Messages */
@@ -143,7 +72,7 @@ body {
 
 /* Main Content */
 .profile-main {
-    padding: 50px 0 100px;
+    padding: 0 0 100px;
 }
 
 /* Profile Card */
@@ -194,6 +123,14 @@ body {
 
 .card-header h2 i {
     font-size: 1.5rem;
+}
+
+/* Header Buttons */
+.header-buttons {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 /* Buttons */
@@ -518,6 +455,10 @@ body {
         text-align: center;
     }
 
+    .header-buttons {
+        justify-content: center;
+    }
+
     .photo-section {
         flex-direction: column;
         text-align: center;
@@ -534,15 +475,7 @@ body {
 
 @media (max-width: 768px) {
     .profile-container {
-        padding-top: 80px;
-    }
-
-    .profile-header {
-        padding: 40px 0;
-    }
-
-    .profile-header h1 {
-        font-size: 2rem;
+        padding-top: 15px;
     }
 
     .card-content {
@@ -560,8 +493,14 @@ body {
         height: 100px;
     }
 
-    .breadcrumb {
-        flex-wrap: wrap;
+    .header-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .header-buttons .btn {
+        width: 100%;
+        justify-content: center;
     }
 }
 

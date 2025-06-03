@@ -2,22 +2,6 @@
 
 @section('content')
 <div class="profile-container">
-    <!-- Header -->
-    <header class="profile-header">
-        <div class="container">
-            <div class="breadcrumb">
-                <a href="{{ route('dashboard') }}" class="breadcrumb-link">
-                    <i class="fas fa-home"></i>
-                    Dashboard
-                </a>
-                <span class="breadcrumb-separator">/</span>
-                <span class="breadcrumb-current">Profil</span>
-            </div>
-            <h1>Profil Saya</h1>
-            <p class="subtitle">Informasi pribadi Anda</p>
-        </div>
-    </header>
-
     <!-- Alert Messages -->
     @if(session('success'))
         <div class="container">
@@ -51,10 +35,16 @@
                             <i class="fas fa-user"></i>
                             Informasi Pribadi
                         </h2>
-                        <a href="{{ route('profile.edit') }}" class="btn primary-btn">
-                            <i class="fas fa-edit"></i>
-                            Edit Profil
-                        </a>
+                        <div class="header-buttons">
+                            <a href="{{ route('dashboard') }}" class="btn primary-btn">
+                                <i class="fas fa-arrow-left"></i>
+                                Kembali ke Dashboard
+                            </a>
+                            <a href="{{ route('profile.edit') }}" class="btn primary-btn">
+                                <i class="fas fa-edit"></i>
+                                Edit Profil
+                            </a>
+                        </div>
                     </div>
                 </div>
 
