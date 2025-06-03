@@ -15,28 +15,32 @@
         <!-- Featured Section -->
         <div class="featured-section">
             <h2><i class="fas fa-star"></i> Artikel Pilihan</h2>
+            @if (isset($news[0]))
             <div class="featured-card">
                 <div class="featured-image">
-                    <img src="{{ $news[0]['image'] }}" alt="{{ $news[0]['title'] }}">
+                    <img src="{{ $news[0]['thumbnail'] }}" alt="{{ $news[0]['title'] }}">
                     <div class="featured-overlay">
-                        <span class="category-badge">{{ $news[0]['category'] }}</span>
+                        <span class="category-badge">{{ $news[0]['category'] ?? 'Umum' }}</span>
                     </div>
                 </div>
                 <div class="featured-content">
                     <h3>{{ $news[0]['title'] }}</h3>
-                    <p>{{ $news[0]['excerpt'] }}</p>
+                    <p>{{ $news[0]['description'] }}</p>
                     <div class="featured-meta">
                         <span class="date">
                             <i class="fas fa-calendar"></i>
-                            {{ date('d M Y', strtotime($news[0]['published_at'])) }}
+                            {{ date('d M Y', strtotime($news[0]['pubDate'])) }}
                         </span>
-                        <a href="{{ route('news.show', $news[0]['id']) }}" class="read-more">
-                            Baca Selengkapnya
-                            <i class="fas fa-arrow-right"></i>
+                        <a href="{{ route('news.show', ['id' => urlencode($news[0]['link'])]) }}" class="read-link">
+                            Baca Selengkapnya <i class="fas fa-arrow-right"></i>
                         </a>
+
                     </div>
                 </div>
             </div>
+            @else
+            <p style="text-align:center; font-style:italic;">Tidak ada artikel pilihan tersedia.</p>
+            @endif
         </div>
 
         <!-- Categories Filter -->
@@ -68,33 +72,36 @@
 
         <!-- News Grid -->
         <div class="news-grid">
-            @foreach($news as $article)
-            <article class="news-card" data-category="{{ $article['category'] }}">
-                <div class="news-image">
-                    <img src="{{ $article['image'] }}" alt="{{ $article['title'] }}">
-                    <div class="news-overlay">
-                        <span class="category-tag {{ strtolower(str_replace(' ', '-', $article['category'])) }}">
-                            {{ $article['category'] }}
-                        </span>
+            @forelse ($news as $article)
+                <article class="news-card" data-category="{{ $article['category'] ?? 'Umum' }}">
+                    <div class="news-image">
+                        <img src="{{ $article['thumbnail'] ?? asset('images/no-image.jpg') }}" alt="{{ $article['title'] }}">
+                        <div class="news-overlay">
+                            <span class="category-tag {{ strtolower(str_replace(' ', '-', $article['category'] ?? 'umum')) }}">
+                                {{ $article['category'] ?? 'Umum' }}
+                            </span>
+                        </div> 
                     </div>
-                </div>
-                <div class="news-content">
-                    <h4>{{ $article['title'] }}</h4>
-                    <p>{{ $article['excerpt'] }}</p>
-                    <div class="news-meta">
-                        <span class="news-date">
-                            <i class="fas fa-clock"></i>
-                            {{ date('d M Y', strtotime($article['published_at'])) }}
-                        </span>
-                        <a href="{{ route('news.show', $article['id']) }}" class="read-link">
-                            Baca
-                            <i class="fas fa-external-link-alt"></i>
-                        </a>
+                    <div class="news-content">
+                        <h4>{{ $article['title'] }}</h4>
+                        <p>{{ $article['description'] }}</p>
+                        <div class="news-meta">
+                            <span class="news-date">
+                                <i class="fas fa-clock"></i>
+                                {{ date('d M Y', strtotime($article['pubDate'])) }}
+                            </span>
+                            <a href="{{ $article['link'] }}" class="read-link" target="_blank" rel="noopener noreferrer">
+                                Baca
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
                     </div>
-                </div>
-            </article>
-            @endforeach
+                </article>
+            @empty
+                <p style="text-align:center; font-style:italic;">Belum ada berita untuk ditampilkan.</p>
+            @endforelse
         </div>
+
 
         <!-- Health Tips Section -->
         <div class="tips-section">

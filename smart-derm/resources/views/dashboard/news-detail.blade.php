@@ -22,34 +22,37 @@
         <!-- Article Header -->
         <header class="article-header">
             <div class="article-meta">
-                <span class="category-badge {{ strtolower(str_replace(' ', '-', $newsItem['category'])) }}">
-                    {{ $newsItem['category'] }}
-                </span>
                 <span class="article-date">
                     <i class="fas fa-calendar-alt"></i>
-                    {{ date('d F Y', strtotime($newsItem['published_at'])) }}
-                </span>
-                <span class="article-author">
-                    <i class="fas fa-user"></i>
-                    {{ $newsItem['author'] }}
+                    {{ !empty($newsItem['pubDate']) ? date('d F Y', strtotime($newsItem['pubDate'])) : '-' }}
                 </span>
             </div>
 
-            <h1 class="article-title">{{ $newsItem['title'] }}</h1>
+            <h1 class="article-title">{{ $newsItem['title'] ?? 'Judul Artikel Tidak Tersedia' }}</h1>
 
+            @if(!empty($newsItem['thumbnail']))
             <div class="article-image">
-                <img src="{{ $newsItem['image'] }}" alt="{{ $newsItem['title'] }}">
+                <img src="{{ $newsItem['thumbnail'] }}" alt="{{ $newsItem['title'] ?? 'Gambar Artikel' }}">
             </div>
+            @endif
         </header>
 
         <!-- Article Body -->
         <div class="article-body">
             <div class="article-text">
-                {!! nl2br(e($newsItem['content'])) !!}
+                {!! !empty($newsItem['description']) ? nl2br(e($newsItem['description'])) : 'Konten artikel tidak tersedia.' !!}
             </div>
 
+            @if(!empty($newsItem['link']))
+            <div class="mt-4">
+                <a href="{{ $newsItem['link'] }}" target="_blank" rel="noopener" class="btn btn-primary">
+                    Baca Selengkapnya di Sumber Asli
+                </a>
+            </div>
+            @endif
+
             <!-- Article Tags -->
-            <div class="article-tags">
+            <div class="article-tags mt-4">
                 <h4>Tags:</h4>
                 <div class="tags-list">
                     <span class="tag">Kesehatan Kulit</span>
@@ -88,38 +91,7 @@
     <section class="related-section">
         <h3><i class="fas fa-newspaper"></i> Artikel Terkait</h3>
         <div class="related-grid">
-            <div class="related-card">
-                <div class="related-image">
-                    <img src="https://via.placeholder.com/300x150/059669/ffffff?text=Tips+Skincare" alt="Related Article">
-                </div>
-                <div class="related-content">
-                    <h5>Tips Merawat Kulit Sensitif</h5>
-                    <p>Panduan lengkap merawat kulit sensitif dengan produk yang tepat...</p>
-                    <a href="#" class="related-link">Baca Artikel</a>
-                </div>
-            </div>
-
-            <div class="related-card">
-                <div class="related-image">
-                    <img src="https://via.placeholder.com/300x150/dc2626/ffffff?text=Prevention" alt="Related Article">
-                </div>
-                <div class="related-content">
-                    <h5>Mencegah Penyakit Kulit</h5>
-                    <p>Langkah-langkah pencegahan yang efektif untuk menjaga kesehatan kulit...</p>
-                    <a href="#" class="related-link">Baca Artikel</a>
-                </div>
-            </div>
-
-            <div class="related-card">
-                <div class="related-image">
-                    <img src="https://via.placeholder.com/300x150/f59e0b/ffffff?text=Technology" alt="Related Article">
-                </div>
-                <div class="related-content">
-                    <h5>Masa Depan Teknologi Medis</h5>
-                    <p>Perkembangan teknologi AI dalam dunia kesehatan dan kedokteran...</p>
-                    <a href="#" class="related-link">Baca Artikel</a>
-                </div>
-            </div>
+            {{-- Tambahkan data dinamis atau statis di sini --}}
         </div>
     </section>
 
