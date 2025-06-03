@@ -1,0 +1,146 @@
+@extends('layouts.app')
+
+@section('content')
+<div class="news-container">
+    <!-- Navigation -->
+    <nav class="page-nav">
+        <a href="{{ route('dashboard') }}" class="nav-back">
+            <i class="fas fa-arrow-left"></i>
+            Kembali ke Dashboard
+        </a>
+        <h1>Berita & Artikel Kesehatan</h1>
+    </nav>
+
+    <div class="news-content">
+        <!-- Featured Section -->
+        <div class="featured-section">
+            <h2><i class="fas fa-star"></i> Artikel Pilihan</h2>
+            <div class="featured-card">
+                <div class="featured-image">
+                    <img src="{{ $news[0]['image'] }}" alt="{{ $news[0]['title'] }}">
+                    <div class="featured-overlay">
+                        <span class="category-badge">{{ $news[0]['category'] }}</span>
+                    </div>
+                </div>
+                <div class="featured-content">
+                    <h3>{{ $news[0]['title'] }}</h3>
+                    <p>{{ $news[0]['excerpt'] }}</p>
+                    <div class="featured-meta">
+                        <span class="date">
+                            <i class="fas fa-calendar"></i>
+                            {{ date('d M Y', strtotime($news[0]['published_at'])) }}
+                        </span>
+                        <a href="{{ route('news.show', $news[0]['id']) }}" class="read-more">
+                            Baca Selengkapnya
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Categories Filter -->
+        <div class="filter-section">
+            <h3>Kategori</h3>
+            <div class="category-filters">
+                <button class="filter-btn active" data-category="all">
+                    <i class="fas fa-th"></i>
+                    Semua
+                </button>
+                <button class="filter-btn" data-category="Technology">
+                    <i class="fas fa-microchip"></i>
+                    Teknologi
+                </button>
+                <button class="filter-btn" data-category="Health Tips">
+                    <i class="fas fa-heart"></i>
+                    Tips Kesehatan
+                </button>
+                <button class="filter-btn" data-category="Education">
+                    <i class="fas fa-graduation-cap"></i>
+                    Edukasi
+                </button>
+                <button class="filter-btn" data-category="Prevention">
+                    <i class="fas fa-shield-alt"></i>
+                    Pencegahan
+                </button>
+            </div>
+        </div>
+
+        <!-- News Grid -->
+        <div class="news-grid">
+            @foreach($news as $article)
+            <article class="news-card" data-category="{{ $article['category'] }}">
+                <div class="news-image">
+                    <img src="{{ $article['image'] }}" alt="{{ $article['title'] }}">
+                    <div class="news-overlay">
+                        <span class="category-tag {{ strtolower(str_replace(' ', '-', $article['category'])) }}">
+                            {{ $article['category'] }}
+                        </span>
+                    </div>
+                </div>
+                <div class="news-content">
+                    <h4>{{ $article['title'] }}</h4>
+                    <p>{{ $article['excerpt'] }}</p>
+                    <div class="news-meta">
+                        <span class="news-date">
+                            <i class="fas fa-clock"></i>
+                            {{ date('d M Y', strtotime($article['published_at'])) }}
+                        </span>
+                        <a href="{{ route('news.show', $article['id']) }}" class="read-link">
+                            Baca
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>
+            </article>
+            @endforeach
+        </div>
+
+        <!-- Health Tips Section -->
+        <div class="tips-section">
+            <h3><i class="fas fa-lightbulb"></i> Tips Kesehatan Cepat</h3>
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <div class="tip-icon">
+                        <i class="fas fa-sun"></i>
+                    </div>
+                    <div class="tip-content">
+                        <h5>Gunakan Sunscreen</h5>
+                        <p>Lindungi kulit dari sinar UV dengan SPF minimal 30</p>
+                    </div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">
+                        <i class="fas fa-tint"></i>
+                    </div>
+                    <div class="tip-content">
+                        <h5>Jaga Kelembaban</h5>
+                        <p>Gunakan pelembab sesuai jenis kulit setiap hari</p>
+                    </div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">
+                        <i class="fas fa-apple-alt"></i>
+                    </div>
+                    <div class="tip-content">
+                        <h5>Pola Makan Sehat</h5>
+                        <p>Konsumsi makanan bergizi untuk kesehatan kulit</p>
+                    </div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">
+                        <i class="fas fa-bed"></i>
+                    </div>
+                    <div class="tip-content">
+                        <h5>Istirahat Cukup</h5>
+                        <p>Tidur 7-8 jam untuk regenerasi sel kulit</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@vite('resources/css/news.css')
+@vite('resources/js/news.js')
+@endsection

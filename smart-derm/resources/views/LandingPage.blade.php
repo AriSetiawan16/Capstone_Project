@@ -128,7 +128,7 @@
                 </div>
                 <h3>Deteksi Kulit Otomatis</h3>
                 <p>Sistem cerdas yang mampu menganalisis gambar kulit dan memberikan hasil klasifikasi secara cepat dan akurat.</p>
-                
+                <a href="{{ Auth::check() ? route('dashboard') : route('auth') }}" class="btn primary-btn">Mulai Deteksi</a>
             </div>
 
             <div class="service-card">
@@ -137,7 +137,7 @@
                 </div>
                 <h3>Analisis Gejala Kulit</h3>
                 <p>Mendeteksi gejala awal dari berbagai permasalahan kulit berdasarkan pola visual yang terdeteksi.</p>
-                
+
             </div>
 
             <div class="service-card">
@@ -146,7 +146,7 @@
                 </div>
                 <h3>Rekomendasi Perawatan</h3>
                 <p>Saran perawatan kulit yang sesuai dengan hasil analisis, lengkap dengan produk dan tindakan yang direkomendasikan.</p>
-                
+
             </div>
 
             <div class="service-card">
@@ -155,7 +155,7 @@
                 </div>
                 <h3>Riwayat Pemeriksaan</h3>
                 <p>Menyimpan dan memantau hasil pemeriksaan sebelumnya untuk mengetahui perkembangan kondisi kulit dari waktu ke waktu.</p>
-                
+
             </div>
 
             <div class="service-card">
@@ -164,7 +164,7 @@
                 </div>
                 <h3>Panduan Perawatan Harian</h3>
                 <p>Tips perawatan kulit harian yang dipersonalisasi berdasarkan jenis dan kondisi kulit pengguna.</p>
-                
+
             </div>
 
             <div class="service-card">
@@ -173,7 +173,7 @@
                 </div>
                 <h3>Berita Kulit Terkini</h3>
                 <p>Informasi terbaru seputar kesehatan kulit, tren perawatan, dan penelitian terbaru yang dapat membantu menjaga kulit tetap sehat.</p>
-                
+
             </div>
         </div>
     </div>
