@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
+
+<link rel="stylesheet" href="{{ asset('css/news-detail.css') }}">
 <div class="news-detail-container">
     <!-- Navigation -->
     <nav class="page-nav">
@@ -30,11 +32,18 @@
 
             <h1 class="article-title">{{ $newsItem['title'] ?? 'Judul Artikel Tidak Tersedia' }}</h1>
 
-            @if(!empty($newsItem['thumbnail']))
+           @php
+                $originalImage = $newsItem['thumbnail'] ?? null;
+                $imageUrl = $originalImage ? url('/image-proxy?url=' . urlencode($originalImage)) : null;
+            @endphp
+
+            @if($imageUrl)
             <div class="article-image">
-                <img src="{{ $newsItem['thumbnail'] }}" alt="{{ $newsItem['title'] ?? 'Gambar Artikel' }}">
+                <img src="{{ $imageUrl }}" alt="{{ $newsItem['title'] ?? 'Gambar Artikel' }}">
             </div>
             @endif
+
+
         </header>
 
         <!-- Article Body -->
@@ -108,6 +117,4 @@
     </div>
 </div>
 
-@vite('resources/css/news-detail.css')
-@vite('resources/js/news-detail.js')
 @endsection

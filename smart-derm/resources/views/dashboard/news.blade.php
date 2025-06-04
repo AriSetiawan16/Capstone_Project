@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/news.css') }}">
 <div class="news-container">
     <!-- Navigation -->
     <nav class="page-nav">
@@ -13,34 +14,36 @@
 
     <div class="news-content">
         <!-- Featured Section -->
-        <div class="featured-section">
-            <h2><i class="fas fa-star"></i> Artikel Pilihan</h2>
-            @if (isset($news[0]))
-            <div class="featured-card">
-                <div class="featured-image">
-                    <img src="{{ $news[0]['thumbnail'] }}" alt="{{ $news[0]['title'] }}">
-                    <div class="featured-overlay">
-                        <span class="category-badge">{{ $news[0]['category'] ?? 'Umum' }}</span>
-                    </div>
-                </div>
-                <div class="featured-content">
-                    <h3>{{ $news[0]['title'] }}</h3>
-                    <p>{{ $news[0]['description'] }}</p>
-                    <div class="featured-meta">
-                        <span class="date">
-                            <i class="fas fa-calendar"></i>
-                            {{ date('d M Y', strtotime($news[0]['pubDate'])) }}
-                        </span>
-                        <a href="{{ route('news.show', ['id' => urlencode($news[0]['link'])]) }}" class="read-link">
-                            Baca Selengkapnya <i class="fas fa-arrow-right"></i>
-                        </a>
-
-                    </div>
+        @if (isset($news[0]))
+        <div class="featured-card">
+            <div class="featured-image">
+                <img src="{{ url('/image-proxy?url=' . urlencode($news[0]['thumbnail'])) }}" alt="{{ $news[0]['title'] }}">
+                
+                <div class="featured-overlay">
+                    <span class="category-tag {{ strtolower(str_replace(' ', '-', $news[0]['category'] ?? 'umum')) }}">
+                        {{ $news[0]['category'] ?? 'Umum' }}
+                    </span>
                 </div>
             </div>
-            @else
-            <p style="text-align:center; font-style:italic;">Tidak ada artikel pilihan tersedia.</p>
-            @endif
+            <div class="featured-content">
+                <h3>{{ $news[0]['title'] }}</h3>
+                <p>{{ $news[0]['description'] }}</p>
+                <div class="featured-meta">
+                    <span class="date">
+                        <i class="fas fa-calendar"></i>
+                        {{ date('d M Y', strtotime($news[0]['pubDate'])) }}
+                    </span>
+                    <a href="{{ route('news.show', ['id' => urlencode($news[0]['link'])]) }}" class="read-link">
+                        Baca Selengkapnya <i class="fas fa-arrow-right"></i>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+        @else
+        <p style="text-align:center; font-style:italic;">Tidak ada artikel pilihan tersedia.</p>
+        @endif
+
         </div>
 
         <!-- Categories Filter -->
@@ -72,10 +75,14 @@
 
         <!-- News Grid -->
         <div class="news-grid">
-            @forelse ($news as $article)
+           @forelse ($news as $article)
+                @php
+                    $thumbnail = $article['thumbnail'] ?? '';
+                    $thumbnailHttps = preg_replace("/^http:/i", "https:", $thumbnail);
+                @endphp
                 <article class="news-card" data-category="{{ $article['category'] ?? 'Umum' }}">
                     <div class="news-image">
-                        <img src="{{ $article['thumbnail'] ?? asset('images/no-image.jpg') }}" alt="{{ $article['title'] }}">
+                        <img src="{{ url('/image-proxy?url=' . urlencode($article['thumbnail'])) }}" alt="{{ $article['title'] }}">
                         <div class="news-overlay">
                             <span class="category-tag {{ strtolower(str_replace(' ', '-', $article['category'] ?? 'umum')) }}">
                                 {{ $article['category'] ?? 'Umum' }}
@@ -100,6 +107,7 @@
             @empty
                 <p style="text-align:center; font-style:italic;">Belum ada berita untuk ditampilkan.</p>
             @endforelse
+
         </div>
 
 
@@ -148,6 +156,5 @@
     </div>
 </div>
 
-@vite('resources/css/news.css')
-@vite('resources/js/news.js')
+
 @endsection

@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+
+<link rel="stylesheet" href="{{ asset('css/detection.css') }}">
+<script src="{{ asset('js/detection.js') }}"></script>
 <div class="detection-container">
     <!-- Navigation -->
     <nav class="page-nav">
@@ -91,20 +94,7 @@
                     </div>
                 </div>
 
-                <!-- Symptoms -->
-                <div class="form-section">
-                    <h4>Gejala & Keluhan</h4>
-                    <div class="form-group">
-                        <label for="symptoms">
-                            <i class="fas fa-notes-medical"></i>
-                            Deskripsikan gejala yang Anda alami
-                        </label>
-                        <textarea name="symptoms" id="symptoms" rows="4" placeholder="Contoh: Kulit kemerahan, gatal, terdapat ruam kecil..." required>{{ old('symptoms') }}</textarea>
-                        @error('symptoms')
-                            <span class="error-text">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
+              
 
                 <!-- Image Upload -->
                 <div class="form-section">
@@ -158,6 +148,4 @@
     </div>
 </div>
 
-@vite('resources/css/detection.css')
-@vite('resources/js/detection.js')
 @endsection

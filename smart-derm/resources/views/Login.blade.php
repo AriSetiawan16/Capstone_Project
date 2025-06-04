@@ -6,7 +6,8 @@
     <title>SmartDerm | Analitik Penyakit Kulit Berbasis AI</title>
     <link rel="icon" type="image/png" href="assets/favicon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    @vite('resources/css/Login.css')
+    <link rel="stylesheet" href="{{ asset('css/Login.css') }}">
+    <script src="{{ asset('js/Login.js') }}"></script>
 </head>
 <body>
     <div class="background"></div>
@@ -85,7 +86,5 @@
             </div>
         </div>
     </div>
-
-    @vite('resources/js/Login.js')
 </body>
 </html>

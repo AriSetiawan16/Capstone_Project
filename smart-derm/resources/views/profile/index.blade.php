@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/profile.css') }}">
+<script src="{{ asset('js/profile.js') }}"></script>
 <div class="profile-container">
     <!-- Alert Messages -->
     @if(session('success'))
@@ -137,5 +139,4 @@
     </main>
 </div>
 
-@vite(['resources/css/profile.css', 'resources/js/profile.js'])
 @endsection

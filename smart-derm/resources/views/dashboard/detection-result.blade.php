@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
+
+<link rel="stylesheet" href="{{ asset('css/detection-result.css') }}">
 <div class="result-container">
     <!-- Navigation -->
     <nav class="page-nav">
@@ -151,5 +153,4 @@
     </div>
 </div>
 
-@vite('resources/css/detection-result.css')
 @endsection

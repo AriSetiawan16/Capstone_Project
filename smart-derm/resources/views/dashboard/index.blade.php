@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
+
+<link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">>
 <div class="dashboard-container">
     <!-- Header -->
     <header class="dashboard-header">
@@ -73,50 +75,18 @@
             </div>
         </div>
 
-        <!-- Stats Section -->
-        <div class="stats-section">
-            <h3>Statistik Platform</h3>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h4>5,000+</h4>
-                        <p>Pengguna Aktif</p>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-image"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h4>15,000+</h4>
-                        <p>Gambar Dianalisis</p>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h4>95%</h4>
-                        <p>Akurasi AI</p>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-clock"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h4>24/7</h4>
-                        <p>Layanan Tersedia</p>
-                    </div>
+        <!-- Story History Section -->
+        <div class="story-history-section">
+            <h3>Lihat Riwayat Story</h3>
+            <div class="history-grid">
+                <!-- Story history items will be displayed here -->
+                <div class="history-empty">
+                    <i class="fas fa-history"></i>
+                    <p>Riwayat story Anda akan muncul di sini</p>
                 </div>
             </div>
         </div>
     </main>
 </div>
 
-@vite('resources/css/dashboard.css')
 @endsection

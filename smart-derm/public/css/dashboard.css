@@ -291,6 +291,56 @@ body {
     background: linear-gradient(90deg, #00acc1, #4dd0e1);
     border-radius: 3px;
 }
+.story-history-section {
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+.story-history-section h3 {
+    color: #00838f;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.history-container {
+    display: grid;
+    gap: 15px;
+}
+
+.history-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 8px;
+    background: #f9f9f9;
+}
+
+.story-thumbnail {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    background-size: cover;
+    background-position: center;
+}
+
+.story-meta {
+    flex: 1;
+    padding: 0 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.history-empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: #888;
+}
 
 .stats-grid {
     display: grid;
