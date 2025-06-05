@@ -2,14 +2,48 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DetectionResult;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\Controller;
 
 class DetectionController extends Controller
 {
     public function index()
     {
         return view('dashboard.detection');
+    }
+    public function save(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'age' => 'required|integer',
+            'gender' => 'required|in:male,female',
+            'predicted_class' => 'required|string',
+            'confidence' => 'required|numeric',
+            'image_path' => 'required|string',
+            'recommendation' => 'required|string',
+        ]);
+
+        $result = DetectionResult::create([
+            'name' => $request->name,
+            'age' => $request->age,
+            'gender' => $request->gender,
+            'predicted_class' => $request->predicted_class,
+            'confidence' => $request->confidence,
+            'image_path' => $request->image_path,
+            'recommendation' => $request->recommendation,
+        ]);
+
+        session()->flash('last_detection', $result);
+
+        return redirect()->route('dashboard')->with('success', 'Hasil berhasil disimpan!');
+    }
+    public function detectionForm(Request $request)
+    {
+        $analysisResult = session('analysisResult');
+        return view('detection', compact('analysisResult'));
     }
 
     public function analyze(Request $request)
@@ -22,43 +56,44 @@ class DetectionController extends Controller
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // Store the uploaded image
-        $imagePath = $request->file('image')->store('image', 'public');
+        // Upload gambar
+        $image = $request->file('image');
+        $imagePath = $image->store('image', 'public');
 
-        // Here you would typically integrate with your AI model
-        // For now, we'll simulate the analysis
-        $analysisResult = $this->simulateAnalysis($request->all(), $imagePath);
+        // Kirim gambar ke API Flask
+        try {
+            $response = Http::attach(
+                'image',
+                fopen($image->getRealPath(), 'r'),
+                $image->getClientOriginalName()
+            )->post('https://c7aa-103-189-207-206.ngrok-free.app/predict');
 
-        return view('dashboard.detection-result', compact('analysisResult'));
-    }
+            if ($response->successful()) {
+                $result = $response->json();
 
-    private function simulateAnalysis($data, $imagePath)
-    {
-        // Simulate AI analysis - replace with actual AI integration
-        $possibleConditions = [
-            'Acne Vulgaris',
-            'Eczema',
-            'Psoriasis',
-            'Dermatitis',
-            'Skin Irritation',
-            'Normal Skin'
-        ];
+                // Simpan ke database
+                $record = DetectionResult::create([
+                    'name' => $request->name,
+                    'age' => $request->age,
+                    'gender' => $request->gender,
+                    'predicted_class' => $result['predicted_class'],
+                    'confidence' => $result['confidence'],
+                    'recommendation' => $result['recommendation'],
+                    'image_path' => $imagePath,
+                ]);
 
-        return [
-            'patient_name' => $data['name'],
-            'age' => $data['age'],
-            'gender' => $data['gender'],
-            'symptoms' => $data['symptoms'],
-            'image_path' => $imagePath,
-            'predicted_condition' => $possibleConditions[array_rand($possibleConditions)],
-            'confidence' => rand(75, 95),
-            'recommendations' => [
-                'Konsultasi dengan dokter kulit',
-                'Jaga kebersihan area yang terkena',
-                'Hindari menggaruk atau menyentuh area tersebut',
-                'Gunakan pelembab yang sesuai'
-            ],
-            'analyzed_at' => now()
-        ];
+                session(['last_detection' => $record]);
+
+                return view('dashboard.detection', [
+                    'analysisResult' => $record,
+                ]);
+
+
+            } else {
+                return back()->withErrors(['error' => 'Gagal menghubungi server prediksi.']);
+            }
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Server error: ' . $e->getMessage()]);
+        }
     }
 }

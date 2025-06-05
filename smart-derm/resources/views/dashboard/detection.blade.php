@@ -128,14 +128,93 @@
                         <i class="fas fa-search"></i>
                         Analisis Sekarang
                     </button>
-                    
                 </div>
-                <div id="result" style="display:none;">
-                    <h3>Hasil Analisis</h3>
-                    <p id="predictionText">Tunggu hasil analisis...</p>
-                </div>
-
             </form>
+
+            <!-- Loading Animation -->
+            <div id="loadingContainer" class="loading-overlay" style="display: none;">
+                <div class="loading-content">
+                    <div class="loading-spinner">
+                        <div class="spinner-circle"></div>
+                        <div class="spinner-circle"></div>
+                        <div class="spinner-circle"></div>
+                        <div class="spinner-circle"></div>
+                    </div>
+                    <p class="loading-text">Menganalisis gambar...</p>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progressBar"></div>
+                    </div>
+                    <p class="progress-text">Mengunggah: <span id="progressPercent">0</span>%</p>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div id="resultContainer" class="result-overlay" style="display:none;">
+                <div class="result-content">
+                    <button type="button" id="closeResult" class="close-btn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    
+                    <div class="result-header">
+                        <h3><i class="fas fa-clipboard-check"></i> Hasil Analisis</h3>
+                    </div>
+                    
+                    <div class="result-body">
+                        <div class="result-image-container">
+                            <h4>Gambar yang Diupload</h4>
+                            <div class="image-wrapper">
+                                <img id="resultPreview" src="" alt="Uploaded Image">
+                            </div>
+                        </div>
+                        
+                        <div class="result-analysis-container">
+                            <div class="diagnosis-section">
+                                <h4>Diagnosis</h4>
+                                <div class="diagnosis-card">
+                                    <div class="diagnosis-icon">
+                                        <i class="fas fa-diagnoses"></i>
+                                    </div>
+                                    <div class="diagnosis-content">
+                                        <p id="predictionText" class="diagnosis-text">Tunggu hasil analisis...</p>
+                                        <div id="confidenceMeter" class="confidence-meter">
+                                            <div class="confidence-fill" id="confidenceFill"></div>
+                                            <span class="confidence-percent" id="confidencePercent">0%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="recommendation-section">
+                                <h4>Rekomendasi</h4>
+                                <div id="recommendationText" class="recommendation-content">
+                                    <!-- Recommendations will be inserted here -->
+                                </div>
+                            </div>
+                            
+                            @if(isset($analysisResult))
+                                <form method="POST" action="{{ route('detection.save') }}">
+                                    @csrf
+                                    <input type="hidden" name="name" value="{{ $analysisResult['name'] }}">
+                                    <input type="hidden" name="age" value="{{ $analysisResult['age'] }}">
+                                    <input type="hidden" name="gender" value="{{ $analysisResult['gender'] }}">
+                                    <input type="hidden" name="predicted_class" value="{{ $analysisResult['predicted_class'] }}">
+                                    <input type="hidden" name="confidence" value="{{ $analysisResult['confidence'] }}">
+                                    <input type="hidden" name="image_path" value="{{ $analysisResult['image_path'] }}">
+                                    <input type="hidden" name="recommendation" value="{{ $analysisResult['recommendation'] }}">
+
+                                    <button type="submit" class="btn btn-secondary">
+                                        <i class="fas fa-save"></i> Simpan Hasil
+                                    </button>
+                                </form>
+                                @endif
+                                <button type="button" class="btn btn-primary" id="newAnalysisBtn">
+                                    <i class="fas fa-redo"></i> Analisis Baru
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Tips -->
