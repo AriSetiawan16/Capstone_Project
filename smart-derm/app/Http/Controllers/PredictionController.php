@@ -24,11 +24,11 @@ class PredictionController extends Controller
 
             $tempPath = $file->getRealPath();
             $originalName = $file->getClientOriginalName();
-
+            
             // Kirim ke endpoint Flask
             $response = Http::attach(
                 'image', fopen($tempPath, 'r'), $originalName
-            )->post('https://c7aa-103-189-207-206.ngrok-free.app/predict');
+            )->post('http://127.0.0.1:5000/predict');
 
             if ($response->successful()) {
                 $predictionResult = $response->json();
