@@ -3,7 +3,7 @@
 @section('content')
 
 <link rel="stylesheet" href="{{ asset('css/detection.css') }}">
-<script src="{{ asset('js/detection.js') }}"></script>
+
 <div class="detection-container">
     <!-- Navigation -->
     <nav class="page-nav">
@@ -42,7 +42,7 @@
         <div class="form-card">
             <h3><i class="fas fa-clipboard-list"></i> Formulir Deteksi</h3>
 
-            <form action="{{ route('detection.analyze') }}" method="POST" enctype="multipart/form-data" id="detectionForm">
+            <form method="POST" enctype="multipart/form-data" id="detectionForm">
                 @csrf
 
                 <!-- Personal Information -->
@@ -94,18 +94,16 @@
                     </div>
                 </div>
 
-              
-
                 <!-- Image Upload -->
                 <div class="form-section">
                     <h4>Upload Gambar</h4>
                     <div class="form-group">
-                        <label for="skin_image">
+                        <label for="image">
                             <i class="fas fa-camera"></i>
                             Foto Area Kulit
                         </label>
                         <div class="image-upload-area" id="imageUploadArea">
-                            <input type="file" name="skin_image" id="skin_image" accept="image/*" required>
+                            <input type="file" name="image" id="image" accept="image/*" required>
                             <div class="upload-placeholder">
                                 <i class="fas fa-cloud-upload-alt"></i>
                                 <p>Klik untuk upload gambar atau drag & drop</p>
@@ -118,7 +116,7 @@
                                 </button>
                             </div>
                         </div>
-                        @error('skin_image')
+                        @error('image')
                             <span class="error-text">{{ $message }}</span>
                         @enderror
                     </div>
@@ -130,7 +128,13 @@
                         <i class="fas fa-search"></i>
                         Analisis Sekarang
                     </button>
+                    
                 </div>
+                <div id="result" style="display:none;">
+                    <h3>Hasil Analisis</h3>
+                    <p id="predictionText">Tunggu hasil analisis...</p>
+                </div>
+
             </form>
         </div>
 
@@ -148,4 +152,30 @@
     </div>
 </div>
 
+<!-- Pindahkan JS ke bawah halaman untuk memastikan DOM siap -->
+<script src="{{ asset('js/detection.js') }}"></script>
+
 @endsection
+<script>
+document.getElementById('image').addEventListener('change', function () {
+    const file = this.files[0];
+    const preview = document.getElementById('imagePreview');
+    const img = document.getElementById('previewImg');
+    const removeBtn = document.getElementById('removeImage');
+
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            img.src = e.target.result;
+            preview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    }
+
+    removeBtn.addEventListener('click', function () {
+        preview.style.display = 'none';
+        img.src = '';
+        document.getElementById('image').value = '';
+    });
+});
+</script>

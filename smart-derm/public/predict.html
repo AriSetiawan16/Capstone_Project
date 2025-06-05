@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Skin Disease Prediction</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+</head>
+<body>
+  <h2>Upload Gambar Kulit</h2>
+  <input type="file" id="imageUpload" accept="image/*" />
+  <p id="result"></p>
+
+  <script>
+    let model;
+
+    async function loadModel() {
+      model = await tf.loadLayersModel('/model/model.json');
+      console.log("Model Loaded");
+    }
+
+    loadModel();
+
+    document.getElementById('imageUpload').addEventListener('change', async function (e) {
+      const file = e.target.files[0];
+      const img = new Image();
+      const reader = new FileReader();
+
+      reader.onload = function (event) {
+        img.src = event.target.result;
+        img.onload = async function () {
+          let tensor = tf.browser.fromPixels(img)
+            .resizeNearestNeighbor([224, 224])
+            .toFloat()
+            .div(tf.scalar(255.0))
+            .expandDims();
+
+          const prediction = await model.predict(tensor).data();
+          const classes = ['acne', 'eczema', 'psoriasis', 'ringworm', 'vitiligo'];
+
+          const maxIndex = prediction.indexOf(Math.max(...prediction));
+          document.getElementById('result').innerText =
+            `Prediksi: ${classes[maxIndex]} (Confidence: ${(prediction[maxIndex] * 100).toFixed(2)}%)`;
+        };
+      };
+      reader.readAsDataURL(file);
+    });
+  </script>
+</body>
+</html>

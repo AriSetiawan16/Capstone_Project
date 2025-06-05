@@ -1,14 +1,15 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LandingPageController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\DetectionController;
-use App\Http\Controllers\NewsController;
-use App\Http\Controllers\ProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\NewsController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DetectionController;
+use App\Http\Controllers\PredictionController;
+use App\Http\Controllers\LandingPageController;
 
 Route::get('/image-proxy', function (Request $request) {
     $url = $request->query('url');
@@ -67,3 +68,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile/delete-photo', [ProfileController::class, 'deletePhoto'])->name('profile.delete-photo');
 
 });
+
+Route::post('/predict', [PredictionController::class, 'getPrediction']);
+
+

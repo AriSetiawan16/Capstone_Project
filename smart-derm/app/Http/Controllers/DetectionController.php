@@ -19,11 +19,11 @@ class DetectionController extends Controller
             'age' => 'required|integer|min:1|max:120',
             'gender' => 'required|in:male,female',
             'symptoms' => 'required|string',
-            'skin_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         // Store the uploaded image
-        $imagePath = $request->file('skin_image')->store('skin_images', 'public');
+        $imagePath = $request->file('image')->store('image', 'public');
 
         // Here you would typically integrate with your AI model
         // For now, we'll simulate the analysis
