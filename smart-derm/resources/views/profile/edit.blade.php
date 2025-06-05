@@ -253,7 +253,7 @@
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert("Terjadi kesalahan saat menghapus foto: " + error.message);
+                alert("foto belum disimpan harap simpan foto terlebih dahulu");
             })
             .finally(() => {
                 // Reset button state

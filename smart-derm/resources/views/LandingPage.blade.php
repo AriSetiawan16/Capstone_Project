@@ -9,7 +9,7 @@
             <a href="#home">Home</a>
             <a href="#about">About</a>
             <a href="#services">Services</a>
-            <a href="{{ route('auth') }}" class="btn appointment-btn">Make Appointment</a>
+            <a href="{{ route('auth') }}" class="btn appointment-btn">Login</a>
         </div>
         <button class="hamburger">
             <i class="fas fa-bars"></i>
@@ -215,7 +215,7 @@
             <p>&copy; 2025 SmartDerm. All rights reserved.</p>
         </div>
     </div>
-        
+
 </footer>
 </body>
 </html>

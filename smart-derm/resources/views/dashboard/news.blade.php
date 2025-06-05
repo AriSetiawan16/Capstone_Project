@@ -18,7 +18,7 @@
         <div class="featured-card">
             <div class="featured-image">
                 <img src="{{ url('/image-proxy?url=' . urlencode($news[0]['thumbnail'])) }}" alt="{{ $news[0]['title'] }}">
-                
+
                 <div class="featured-overlay">
                     <span class="category-tag {{ strtolower(str_replace(' ', '-', $news[0]['category'] ?? 'umum')) }}">
                         {{ $news[0]['category'] ?? 'Umum' }}
@@ -87,7 +87,7 @@
                             <span class="category-tag {{ strtolower(str_replace(' ', '-', $article['category'] ?? 'umum')) }}">
                                 {{ $article['category'] ?? 'Umum' }}
                             </span>
-                        </div> 
+                        </div>
                     </div>
                     <div class="news-content">
                         <h4>{{ $article['title'] }}</h4>

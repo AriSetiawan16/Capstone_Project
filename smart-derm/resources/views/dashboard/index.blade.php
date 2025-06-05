@@ -2,7 +2,7 @@
 
 @section('content')
 
-<link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">>
+<link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
 <div class="dashboard-container">
     <!-- Header -->
     <header class="dashboard-header">
