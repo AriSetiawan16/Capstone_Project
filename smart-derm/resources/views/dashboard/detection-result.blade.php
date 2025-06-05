@@ -145,10 +145,25 @@
                 <i class="fas fa-print"></i>
                 Cetak Hasil
             </button>
-            <a href="{{ route('news') }}" class="btn btn-outline">
-                <i class="fas fa-book-open"></i>
-                Baca Artikel Terkait
-            </a>
+                  <form method="POST" action="{{ route('detection.save') }}" style="display: inline;">
+                    @csrf
+                    <input type="hidden" name="name" value="{{ $analysisResult['patient_name'] }}">
+                    <input type="hidden" name="age" value="{{ $analysisResult['age'] }}">
+                    <input type="hidden" name="gender" value="{{ $analysisResult['gender'] }}">
+                    <input type="hidden" name="predicted_class" value="{{ $analysisResult['predicted_condition'] }}">
+                    <input type="hidden" name="confidence" value="{{ $analysisResult['confidence'] }}">
+                    <input type="hidden" name="image_path" value="{{ $analysisResult['image_path'] }}">
+                    <input type="hidden" name="recommendation" value="{{ implode(', ', $analysisResult['recommendations']) }}">
+
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save"></i> Simpan Hasil
+                    </button>
+                </form>
+                <a href="{{ route('news') }}" class="btn btn-outline">
+                    <i class="fas fa-book-open"></i>
+                    Baca Artikel Terkait
+                </a>
+            </div>
         </div>
     </div>
 </div>

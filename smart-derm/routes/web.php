@@ -71,4 +71,5 @@ Route::middleware('auth')->group(function () {
 
 Route::post('/predict', [PredictionController::class, 'getPrediction']);
 Route::get('/detection/create', [DetectionController::class, 'create'])->name('detection.create');
+Route::post('/detection/save', [DetectionController::class, 'save'])->name('detection.save');
 

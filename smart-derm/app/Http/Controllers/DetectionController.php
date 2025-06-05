@@ -6,12 +6,44 @@ use App\Models\DetectionResult;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\Controller;
 
 class DetectionController extends Controller
 {
     public function index()
     {
         return view('dashboard.detection');
+    }
+    public function save(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'age' => 'required|integer',
+            'gender' => 'required|in:male,female',
+            'predicted_class' => 'required|string',
+            'confidence' => 'required|numeric',
+            'image_path' => 'required|string',
+            'recommendation' => 'required|string',
+        ]);
+
+        $result = DetectionResult::create([
+            'name' => $request->name,
+            'age' => $request->age,
+            'gender' => $request->gender,
+            'predicted_class' => $request->predicted_class,
+            'confidence' => $request->confidence,
+            'image_path' => $request->image_path,
+            'recommendation' => $request->recommendation,
+        ]);
+
+        session()->flash('last_detection', $result);
+
+        return redirect()->route('dashboard')->with('success', 'Hasil berhasil disimpan!');
+    }
+    public function detectionForm(Request $request)
+    {
+        $analysisResult = session('analysisResult');
+        return view('detection', compact('analysisResult'));
     }
 
     public function analyze(Request $request)
@@ -52,9 +84,11 @@ class DetectionController extends Controller
 
                 session(['last_detection' => $record]);
 
-                return view('dashboard.detection-result', [
+                return view('dashboard.detection', [
                     'analysisResult' => $record,
                 ]);
+
+
             } else {
                 return back()->withErrors(['error' => 'Gagal menghubungi server prediksi.']);
             }

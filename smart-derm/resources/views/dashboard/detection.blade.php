@@ -191,10 +191,22 @@
                                 </div>
                             </div>
                             
-                            <div class="action-buttons">
-                                <button type="button" class="btn btn-secondary" id="saveResultBtn">
-                                    <i class="fas fa-save"></i> Simpan Hasil
-                                </button>
+                            @if(isset($analysisResult))
+                                <form method="POST" action="{{ route('detection.save') }}">
+                                    @csrf
+                                    <input type="hidden" name="name" value="{{ $analysisResult['name'] }}">
+                                    <input type="hidden" name="age" value="{{ $analysisResult['age'] }}">
+                                    <input type="hidden" name="gender" value="{{ $analysisResult['gender'] }}">
+                                    <input type="hidden" name="predicted_class" value="{{ $analysisResult['predicted_class'] }}">
+                                    <input type="hidden" name="confidence" value="{{ $analysisResult['confidence'] }}">
+                                    <input type="hidden" name="image_path" value="{{ $analysisResult['image_path'] }}">
+                                    <input type="hidden" name="recommendation" value="{{ $analysisResult['recommendation'] }}">
+
+                                    <button type="submit" class="btn btn-secondary">
+                                        <i class="fas fa-save"></i> Simpan Hasil
+                                    </button>
+                                </form>
+                                @endif
                                 <button type="button" class="btn btn-primary" id="newAnalysisBtn">
                                     <i class="fas fa-redo"></i> Analisis Baru
                                 </button>
