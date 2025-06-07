@@ -39,7 +39,7 @@
 
             @if($imageUrl)
             <div class="article-image">
-                <img src="{{ $imageUrl }}" alt="{{ $newsItem['title'] ?? 'Gambar Artikel' }}">
+                <img src="{{ asset($newsItem['local_thumbnail'] ?? 'images/placeholder-news.jpg') }}" alt="{{ $newsItem['title'] ?? 'Gambar Artikel' }}">
             </div>
             @endif
 

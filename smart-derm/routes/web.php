@@ -11,26 +11,26 @@ use App\Http\Controllers\DetectionController;
 use App\Http\Controllers\PredictionController;
 use App\Http\Controllers\LandingPageController;
 
-Route::get('/image-proxy', function (Request $request) {
-    $url = $request->query('url');
+// Route::get('/image-proxy', function (Request $request) {
+//     $url = $request->query('url');
 
-    if (!$url || !filter_var($url, FILTER_VALIDATE_URL)) {
-        return response('Invalid URL', 400);
-    }
+//     if (!$url || !filter_var($url, FILTER_VALIDATE_URL)) {
+//         return response('Invalid URL', 400);
+//     }
 
-    try {
-        $response = Http::timeout(10)->get($url);
+//     try {
+//         $response = Http::timeout(10)->get($url);
 
-        if (!$response->successful()) {
-            return response('Image not found', 404);
-        }
+//         if (!$response->successful()) {
+//             return response('Image not found', 404);
+//         }
 
-        $mimeType = $response->header('Content-Type', 'image/jpeg');
-        return response($response->body())->header('Content-Type', $mimeType);
-    } catch (\Exception $e) {
-        return response('Proxy error: ' . $e->getMessage(), 500);
-    }
-});
+//         $mimeType = $response->header('Content-Type', 'image/jpeg');
+//         return response($response->body())->header('Content-Type', $mimeType);
+//     } catch (\Exception $e) {
+//         return response('Proxy error: ' . $e->getMessage(), 500);
+//     }
+// });
 
 
 // Halaman login/register (form UI)
