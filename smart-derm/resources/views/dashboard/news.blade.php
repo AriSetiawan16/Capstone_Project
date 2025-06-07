@@ -48,8 +48,8 @@
 
         <!-- Categories Filter -->
         <div class="filter-section">
-            <h3>Kategori</h3>
-            <div class="category-filters">
+            <h3>Berita Kesehatan</h3>
+            {{-- <div class="category-filters">
                 <button class="filter-btn active" data-category="all">
                     <i class="fas fa-th"></i>
                     Semua
@@ -70,7 +70,7 @@
                     <i class="fas fa-shield-alt"></i>
                     Pencegahan
                 </button>
-            </div>
+            </div> --}}
         </div>
 
         <!-- News Grid -->
