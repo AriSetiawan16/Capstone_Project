@@ -128,7 +128,7 @@
                 <button class="btn-view-details">
                     <i class="fas fa-eye"></i> Lihat Detail
                 </button>
-                <a href="{{ route('home') }}" class="btn-new-analysis">
+                <a href="{{ route('detection') }}" class="btn-new-analysis">
                     <i class="fas fa-redo"></i> Analisis Baru
                 </a>
             </div>

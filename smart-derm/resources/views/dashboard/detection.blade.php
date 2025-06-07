@@ -26,7 +26,6 @@
 
         <div class="form-card">
             <h3><i class="fas fa-clipboard-list"></i> Formulir Deteksi</h3>
-
             <form method="POST" action="{{ route('detection.analyze') }}" enctype="multipart/form-data" id="detectionForm">
                 @csrf
 
@@ -72,115 +71,73 @@
                     <button type="submit" class="btn btn-primary btn-large" id="submitBtn"><i class="fas fa-search"></i> Analisis Sekarang</button>
                 </div>
             </form>
-
-            <div id="resultContainer" class="result-overlay" style="display: {{ !empty($analysisResult) ? 'flex' : 'none' }};">
-                <div class="result-content">
-                    <button type="button" id="closeResult" class="close-btn"><i class="fas fa-times"></i></button>
-                    <div class="result-header"><h3><i class="fas fa-clipboard-check"></i> Hasil Analisis</h3></div>
-
-                    @if(!empty($analysisResult))
-                    <div class="result-body">
-                        <div class="result-image-container">
-                            <h4>Gambar yang Dianalisis</h4>
-                            <div class="image-wrapper"><img id="resultPreview" src="{{ asset('storage/' . $analysisResult->image_path) }}" alt="Uploaded Image"></div>
-                        </div>
-
-                        <div class="result-analysis-container">
-                            <div class="diagnosis-section">
-                                <h4>Diagnosis</h4>
-                                <div class="diagnosis-card">
-                                    <div class="diagnosis-icon"><i class="fas fa-diagnoses"></i></div>
-                                    <div class="diagnosis-content">
-                                        <p id="predictionText" class="diagnosis-text">{{ $analysisResult->predicted_class }}</p>
-                                        <div id="confidenceMeter" class="confidence-meter">
-                                            <div class="confidence-fill" id="confidenceFill" style="width: {{ $analysisResult->confidence * 100 }}%;"></div>
-                                            <span class="confidence-percent" id="confidencePercent">{{ number_format($analysisResult->confidence * 100, 2) }}%</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="recommendation-section">
-                                <h4>Rekomendasi</h4>
-                                <div id="recommendationText" class="recommendation-content">{!! $analysisResult->recommendation !!}</div>
-                            </div>
-
-                            <form method="POST" action="{{ route('detection.save') }}" style="display: inline-block; margin-right: 10px;">
-                                @csrf
-                                <input type="hidden" name="name" value="{{ $analysisResult->name }}">
-                                <input type="hidden" name="age" value="{{ $analysisResult->age }}">
-                                <input type="hidden" name="gender" value="{{ $analysisResult->gender }}">
-                                <input type="hidden" name="predicted_class" value="{{ $analysisResult->predicted_class }}">
-                                <input type="hidden" name="confidence" value="{{ $analysisResult->confidence }}">
-                                <input type="hidden" name="image_path" value="{{ $analysisResult->image_path }}">
-                                <input type="hidden" name="recommendation" value="{{ $analysisResult->recommendation }}">
-                                <button type="submit" class="btn btn-secondary"><i class="fas fa-save"></i> Simpan Hasil</button>
-                            </form>
-
-                            <button type="button" class="btn btn-primary" id="newAnalysisBtn"><i class="fas fa-redo"></i> Analisis Baru</button>
-                        </div>
-                    </div>
-                    @endif
-                </div>
-            </div>
         </div>
 
         <div class="tips-card">
-             <h3><i class="fas fa-lightbulb"></i> Tips untuk Hasil Terbaik</h3>
-            <ul class="tips-list">
+            <h3><i class="fas fa-lightbulb"></i> Tips untuk Hasil Terbaik</h3>
+             <ul class="tips-list">
                 <li><i class="fas fa-check-circle"></i> Pastikan gambar jelas dan tidak blur</li>
                 <li><i class="fas fa-check-circle"></i> Ambil foto dengan pencahayaan yang cukup</li>
                 <li><i class="fas fa-check-circle"></i> Fokus pada area kulit yang bermasalah</li>
             </ul>
         </div>
     </div>
+
+    <div id="resultContainer" class="result-overlay" style="display: {{ !empty($analysisResult) ? 'flex' : 'none' }};">
+        <div class="result-content">
+            <button type="button" id="closeResultBtn" class="close-btn"><i class="fas fa-times"></i></button>
+            <div class="result-header">
+                <h3><i class="fas fa-clipboard-check"></i> Hasil Analisis</h3>
+            </div>
+
+            @if(!empty($analysisResult))
+            <div class="result-body">
+                <div class="result-image-container">
+                    <h4>Gambar yang Dianalisis</h4>
+                    <div class="image-wrapper">
+                        <img src="{{ asset('storage/' . $analysisResult->image_path) }}" alt="Uploaded Image">
+                    </div>
+                </div>
+                <div class="result-analysis-container">
+                    <div class="diagnosis-section">
+                        <h4>Diagnosis</h4>
+                        <div class="diagnosis-card">
+                            <div class="diagnosis-icon"><i class="fas fa-diagnoses"></i></div>
+                            <div class="diagnosis-content">
+                                <p class="diagnosis-text">{{ $analysisResult->predicted_class }}</p>
+                                <div class="confidence-meter">
+                                    <div class="confidence-fill" style="width: {{ $analysisResult->confidence * 100 }}%;"></div>
+                                </div>
+                                <span class="confidence-percent">{{ number_format($analysisResult->confidence * 100, 2) }}%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="recommendation-section">
+                        <h4>Rekomendasi</h4>
+                        <div class="recommendation-content">{!! $analysisResult->recommendation !!}</div>
+                    </div>
+                    <div class="action-buttons">
+                        <form method="POST" action="{{ route('detection.save') }}">
+                            @csrf
+                            <input type="hidden" name="name" value="{{ $analysisResult->name }}">
+                            <input type="hidden" name="age" value="{{ $analysisResult->age }}">
+                            <input type="hidden" name="gender" value="{{ $analysisResult->gender }}">
+                            <input type="hidden" name="predicted_class" value="{{ $analysisResult->predicted_class }}">
+                            <input type="hidden" name="confidence" value="{{ $analysisResult->confidence }}">
+                            <input type="hidden" name="image_path" value="{{ $analysisResult->image_path }}">
+                            <input type="hidden" name="recommendation" value="{{ $analysisResult->recommendation }}">
+                            <button type="submit" class="btn btn-secondary"><i class="fas fa-save"></i> Simpan Hasil</button>
+                        </form>
+                        <button type="button" class="btn btn-primary" id="newAnalysisBtn" data-detection-url="{{ route('detection') }}">
+                            <i class="fas fa-redo"></i> Analisis Baru
+                        </button>
+                    </div>
+                </div>
+            </div>
+            @endif
+        </div>
+    </div>
 </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    const imageInput = document.getElementById('image');
-    const imagePreview = document.getElementById('imagePreview');
-    const previewImg = document.getElementById('previewImg');
-    const removeImageBtn = document.getElementById('removeImage');
-    const resultContainer = document.getElementById('resultContainer');
-    const newAnalysisBtn = document.getElementById('newAnalysisBtn');
-    const closeResultBtn = document.getElementById('closeResult');
-
-    if (imageInput) {
-        imageInput.addEventListener('change', function () {
-            if (this.files && this.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    previewImg.src = e.target.result;
-                    imagePreview.style.display = 'block';
-                }
-                reader.readAsDataURL(this.files[0]);
-            }
-        });
-    }
-
-    if (removeImageBtn) {
-        removeImageBtn.addEventListener('click', function () {
-            imageInput.value = '';
-            previewImg.src = '';
-            imagePreview.style.display = 'none';
-        });
-    }
-
-    if (newAnalysisBtn) {
-        newAnalysisBtn.addEventListener('click', function() {
-            window.location.href = "{{ route('detection') }}";
-        });
-    }
-
-    if (closeResultBtn) {
-        closeResultBtn.addEventListener('click', function() {
-            if(resultContainer) {
-                resultContainer.style.display = 'none';
-            }
-        });
-    }
-});
-</script>
-
+<script src="{{ asset('js/detection.js') }}"></script>
 @endsection
