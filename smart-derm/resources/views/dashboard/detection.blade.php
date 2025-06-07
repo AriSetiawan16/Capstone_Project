@@ -190,26 +190,29 @@
                                     <!-- Recommendations will be inserted here -->
                                 </div>
                             </div>
-                            
-                            @if(isset($analysisResult))
-                                <form method="POST" action="{{ route('detection.save') }}">
-                                    @csrf
-                                    <input type="hidden" name="name" value="{{ $analysisResult['name'] }}">
-                                    <input type="hidden" name="age" value="{{ $analysisResult['age'] }}">
-                                    <input type="hidden" name="gender" value="{{ $analysisResult['gender'] }}">
-                                    <input type="hidden" name="predicted_class" value="{{ $analysisResult['predicted_class'] }}">
-                                    <input type="hidden" name="confidence" value="{{ $analysisResult['confidence'] }}">
-                                    <input type="hidden" name="image_path" value="{{ $analysisResult['image_path'] }}">
-                                    <input type="hidden" name="recommendation" value="{{ $analysisResult['recommendation'] }}">
+                          @if(!empty($analysisResult))
+                            <form method="POST" action="{{ route('detection.save') }}">
+                                @csrf
+                                <input type="hidden" name="name" value="{{ $analysisResult->name }}">
+                                <input type="hidden" name="age" value="{{ $analysisResult->age }}">
+                                <input type="hidden" name="gender" value="{{ $analysisResult->gender }}">
+                                <input type="hidden" name="predicted_class" value="{{ $analysisResult->predicted_class }}">
+                                <input type="hidden" name="confidence" value="{{ $analysisResult->confidence }}">
+                                <input type="hidden" name="image_path" value="{{ $analysisResult->image_path }}">
+                                <input type="hidden" name="recommendation" value="{{ $analysisResult->recommendation }}">
 
-                                    <button type="submit" class="btn btn-secondary">
-                                        <i class="fas fa-save"></i> Simpan Hasil
-                                    </button>
-                                </form>
-                                @endif
-                                <button type="button" class="btn btn-primary" id="newAnalysisBtn">
-                                    <i class="fas fa-redo"></i> Analisis Baru
+                                <button type="submit" class="btn btn-secondary">
+                                    <i class="fas fa-save"></i> Simpan Hasil
                                 </button>
+                            </form>
+                        @endif
+
+
+                        <!-- Tombol ini di luar form karena hanya untuk reset -->
+                        <button type="button" class="btn btn-primary" id="newAnalysisBtn">
+                            <i class="fas fa-redo"></i> Analisis Baru
+                        </button>
+
                             </div>
                         </div>
                     </div>
@@ -236,25 +239,31 @@
 
 @endsection
 <script>
-document.getElementById('image').addEventListener('change', function () {
-    const file = this.files[0];
+document.addEventListener('DOMContentLoaded', function () {
+    const imageInput = document.getElementById('image');
     const preview = document.getElementById('imagePreview');
     const img = document.getElementById('previewImg');
     const removeBtn = document.getElementById('removeImage');
 
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            img.src = e.target.result;
-            preview.style.display = 'block';
-        };
-        reader.readAsDataURL(file);
-    }
+    if (imageInput && preview && img && removeBtn) {
+        imageInput.addEventListener('change', function () {
+            const file = this.files[0];
 
-    removeBtn.addEventListener('click', function () {
-        preview.style.display = 'none';
-        img.src = '';
-        document.getElementById('image').value = '';
-    });
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    img.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+
+            removeBtn.addEventListener('click', function () {
+                preview.style.display = 'none';
+                img.src = '';
+                imageInput.value = '';
+            });
+        });
+    }
 });
 </script>

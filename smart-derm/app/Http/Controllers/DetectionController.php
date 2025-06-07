@@ -36,64 +36,62 @@ class DetectionController extends Controller
             'recommendation' => $request->recommendation,
         ]);
 
-        session()->flash('last_detection', $result);
+        session()->forget('analysisResult'); // bersihkan setelah disimpan
 
-        return redirect()->route('dashboard')->with('success', 'Hasil berhasil disimpan!');
+        return redirect()->route('dashboard.index')->with('success', 'Hasil berhasil disimpan!');
     }
+
     public function detectionForm(Request $request)
     {
         $analysisResult = session('analysisResult');
-        return view('detection', compact('analysisResult'));
+        return view('dashboard.detection', compact('analysisResult'));
     }
+
 
     public function analyze(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'age' => 'required|integer|min:1|max:120',
-            'gender' => 'required|in:male,female',
-            'symptoms' => 'required|string',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
+        {
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'age' => 'required|integer|min:1|max:120',
+                'gender' => 'required|in:male,female',
+                'symptoms' => 'required|string',
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            ]);
 
-        // Upload gambar
-        $image = $request->file('image');
-        $imagePath = $image->store('image', 'public');
+            // Upload gambar
+            $image = $request->file('image');
+            $imagePath = $image->store('image', 'public');
 
-        // Kirim gambar ke API Flask
-        try {
-            $response = Http::attach(
-                'image',
-                fopen($image->getRealPath(), 'r'),
-                $image->getClientOriginalName()
-            )->post('https://c7aa-103-189-207-206.ngrok-free.app/predict');
+            try {
+                $response = Http::attach(
+                    'image',
+                    fopen($image->getRealPath(), 'r'),
+                    $image->getClientOriginalName()
+                )->post('https://c7aa-103-189-207-206.ngrok-free.app/predict');
 
-            if ($response->successful()) {
-                $result = $response->json();
+                if ($response->successful()) {
+                    $result = $response->json();
 
-                // Simpan ke database
-                $record = DetectionResult::create([
-                    'name' => $request->name,
-                    'age' => $request->age,
-                    'gender' => $request->gender,
-                    'predicted_class' => $result['predicted_class'],
-                    'confidence' => $result['confidence'],
-                    'recommendation' => $result['recommendation'],
-                    'image_path' => $imagePath,
-                ]);
+                    $record = new DetectionResult([
+                        'name' => $request->name,
+                        'age' => $request->age,
+                        'gender' => $request->gender,
+                        'predicted_class' => $result['predicted_class'],
+                        'confidence' => $result['confidence'],
+                        'recommendation' => $result['recommendation'],
+                        'image_path' => $imagePath,
+                    ]);
 
-                session(['last_detection' => $record]);
+                    // Simpan hanya ke session (bukan ke DB langsung)
+                    session(['analysisResult' => $record]);
 
-                return view('dashboard.detection', [
-                    'analysisResult' => $record,
-                ]);
-
-
-            } else {
-                return back()->withErrors(['error' => 'Gagal menghubungi server prediksi.']);
+                    return redirect()->route('detection.index'); // Redirect supaya session terbaca
+                } else {
+                    return back()->withErrors(['error' => 'Gagal menghubungi server prediksi.']);
+                }
+            } catch (\Exception $e) {
+                return back()->withErrors(['error' => 'Server error: ' . $e->getMessage()]);
             }
-        } catch (\Exception $e) {
-            return back()->withErrors(['error' => 'Server error: ' . $e->getMessage()]);
         }
-    }
+
 }
