@@ -68,12 +68,11 @@ class DetectionController extends Controller
         $imagePath = $image->store('image', 'public');
 
         try {
-            // !!! PENTING: Ganti URL ini dengan URL ngrok Anda yang sedang aktif !!!
             $response = Http::attach(
                 'image',
                 fopen($image->getRealPath(), 'r'),
                 $image->getClientOriginalName()
-            )->post('https://321b-103-189-207-213.ngrok-free.app/predict');
+            )->post('http://localhost:5000/predict');
 
             if ($response->successful()) {
                 $result = $response->json();
@@ -102,4 +101,10 @@ class DetectionController extends Controller
             return back()->withErrors(['error' => 'Server error: ' . $e->getMessage()]);
         }
     }
+    public function history()
+    {
+        $histories = DetectionResult::latest()->get(); 
+        return view('dashboard.history', compact('histories'));
+    }
+
 }

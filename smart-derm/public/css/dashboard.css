@@ -300,7 +300,7 @@ body {
     }
     
     .story-history-section h3 {
-        color: #4e73df;
+        color: #00838f;
         margin-bottom: 20px;
         display: flex;
         align-items: center;
@@ -325,7 +325,7 @@ body {
     
     .detection-header h4 {
         margin: 0;
-        color: #5a5c69;
+        color: #00838f;
         display: flex;
         align-items: center;
         gap: 8px;
@@ -380,7 +380,7 @@ body {
     
     .detail-label {
         font-weight: 600;
-        color: #4e73df;
+        color: #00838f;
         display: flex;
         align-items: center;
         gap: 8px;
@@ -402,7 +402,7 @@ body {
     .confidence-level {
         height: 100%;
         border-radius: 3px;
-        background: linear-gradient(90deg, #4e73df, #224abe);
+        background: linear-gradient(90deg, #00838f, #224abe);
     }
     
     .detection-actions {
@@ -426,18 +426,18 @@ body {
     }
     
     .btn-view-details {
-        background: #4e73df;
+        background: #00838f;
         color: white;
     }
     
     .btn-view-details:hover {
-        background: #2e59d9;
+        background: #00838f;
     }
     
     .btn-new-analysis {
         background: #f8f9fc;
-        color: #4e73df;
-        border: 1px solid #4e73df;
+        color: #00838f;
+        border: 1px solid #00838f;
     }
     
     .btn-new-analysis:hover {

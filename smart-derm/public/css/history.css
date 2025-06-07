@@ -1,0 +1,209 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+body {
+    min-height: 100vh;
+    /* background: linear-gradient(135deg, #78c7d1, #25a1b1, #1697a9, #11a2b6); */
+    overflow-x: hidden;
+}
+/* Container Styles */
+    .container {
+        max-width: 1200px;
+        padding: 20px;
+    }
+    
+    /* Header Styles */
+    .history-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+    
+    .history-title {
+        color: #2c3e50;
+        font-weight: 700;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .btn-back {
+        background-color: #f8f9fa;
+        color: #2c3e50;
+        border: 1px solid #dee2e6;
+        padding: 8px 15px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-back:hover {
+        background-color: #e9ecef;
+        transform: translateX(-3px);
+    }
+    
+    /* Card Styles */
+    .history-card {
+        display: flex;
+        background: #addee5;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        margin-bottom: 25px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .history-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+    }
+    
+    /* Container gambar */
+    .history-image-container {
+        flex: 0 0 250px;
+        height: 250px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #fff;
+        border-right: 4px solid #fff;
+    }
+
+    /* Gambar */
+    .history-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 0; 
+        transition: transform 0.5s ease;
+    }
+
+    
+    .history-card:hover .history-image {
+        transform: scale(1.05);
+    }
+    
+    .history-content {
+        flex: 1;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    /* Meta Info Styles */
+    .history-meta {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+    }
+    
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        background: #f8f9fa;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 14px;
+        color: #495057;
+    }
+    
+    /* Result Styles */
+    .history-result {
+        margin-bottom: 15px;
+    }
+    
+    .result-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-weight: 600;
+        color: white;
+    }
+    
+    .result-badge.normal {
+        background: linear-gradient(135deg, #2ecc71, #27ae60);
+    }
+    
+    .result-badge:not(.normal) {
+        background: linear-gradient(135deg, #e74c3c, #c0392b);
+    }
+    
+    .confidence {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 2px 8px;
+        border-radius: 10px;
+        font-size: 12px;
+    }
+    
+    /* Recommendation Styles */
+    .history-recommendation {
+        flex-grow: 1;
+        margin-bottom: 15px;
+    }
+    
+    .history-recommendation h4 {
+        color: #2c3e50;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .recommendation-text {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        border-left: 4px solid #3498db;
+        line-height: 1.6;
+    }
+    
+    /* Footer Styles */
+    .history-footer {
+        color: #7f8c8d;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+    
+    /* Empty State Styles */
+    .history-empty {
+        text-align: center;
+        padding: 50px 20px;
+    }
+    
+    .history-empty img {
+        max-width: 300px;
+        margin-bottom: 20px;
+        opacity: 0.7;
+    }
+    
+    .history-empty p {
+        color: #7f8c8d;
+        font-size: 18px;
+    }
+    
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+        .history-card {
+            flex-direction: column;
+        }
+        
+        .history-image-container {
+            flex: 0 0 200px;
+            width: 100%;
+        }
+        
+        .history-meta {
+            gap: 10px;
+        }
+    }

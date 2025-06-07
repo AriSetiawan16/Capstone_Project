@@ -4,7 +4,7 @@
 
 <link rel="stylesheet" href="{{ asset('css/detection.css') }}">
 
-<div class="detection-container">
+<div class="detection-container"    >
     <nav class="page-nav">
         <a href="{{ route('dashboard') }}" class="nav-back">
             <i class="fas fa-arrow-left"></i>

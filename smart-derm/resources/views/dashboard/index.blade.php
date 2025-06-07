@@ -125,8 +125,8 @@
             </div>
 
             <div class="detection-actions">
-                <button class="btn-view-details">
-                    <i class="fas fa-eye"></i> Lihat Detail
+                <a href="{{ route('detection.history') }}" class="btn-view-details">
+                    <i class="fas fa-eye"></i> Lihat Semua Riwayat
                 </button>
                 <a href="{{ route('detection') }}" class="btn-new-analysis">
                     <i class="fas fa-redo"></i> Analisis Baru

@@ -31,7 +31,9 @@ Route::middleware('auth')->group(function () {
     // Detection routes
     Route::get('/detection', [DetectionController::class, 'index'])->name('detection');
     Route::post('/detection/analyze', [DetectionController::class, 'analyze'])->name('detection.analyze');
-    Route::post('/detection/save', [DetectionController::class, 'save'])->name('detection.save'); // Route untuk menyimpan
+    Route::post('/detection/save', [DetectionController::class, 'save'])->name('detection.save'); 
+    Route::get('/detection/history', [DetectionController::class, 'history'])->name('detection.history');
+
 
     // News routes
     Route::get('/news', [NewsController::class, 'index'])->name('news');
