@@ -11,28 +11,6 @@ use App\Http\Controllers\DetectionController;
 use App\Http\Controllers\PredictionController;
 use App\Http\Controllers\LandingPageController;
 
-// Route::get('/image-proxy', function (Request $request) {
-//     $url = $request->query('url');
-
-//     if (!$url || !filter_var($url, FILTER_VALIDATE_URL)) {
-//         return response('Invalid URL', 400);
-//     }
-
-//     try {
-//         $response = Http::timeout(10)->get($url);
-
-//         if (!$response->successful()) {
-//             return response('Image not found', 404);
-//         }
-
-//         $mimeType = $response->header('Content-Type', 'image/jpeg');
-//         return response($response->body())->header('Content-Type', $mimeType);
-//     } catch (\Exception $e) {
-//         return response('Proxy error: ' . $e->getMessage(), 500);
-//     }
-// });
-
-
 // Halaman login/register (form UI)
 Route::get('/auth', function () {
     return view('login');
@@ -53,6 +31,7 @@ Route::middleware('auth')->group(function () {
     // Detection routes
     Route::get('/detection', [DetectionController::class, 'index'])->name('detection');
     Route::post('/detection/analyze', [DetectionController::class, 'analyze'])->name('detection.analyze');
+    Route::post('/detection/save', [DetectionController::class, 'save'])->name('detection.save'); // Route untuk menyimpan
 
     // News routes
     Route::get('/news', [NewsController::class, 'index'])->name('news');
@@ -69,6 +48,5 @@ Route::middleware('auth')->group(function () {
 
 });
 
-Route::post('/predict', [PredictionController::class, 'getPrediction']);
-
-
+// Route ini mungkin tidak lagi digunakan jika Anda mengikuti alur dari DetectionController
+//Route::post('/predict', [PredictionController::class, 'getPrediction']);

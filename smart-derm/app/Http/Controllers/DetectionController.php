@@ -4,16 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Models\DetectionResult;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
+use App\Services\RecommendationService; // Pastikan ini ada
 
 class DetectionController extends Controller
 {
+    /**
+     * Menampilkan halaman deteksi dan hasil analisis dari session jika ada.
+     */
     public function index()
     {
-        return view('dashboard.detection');
+        $analysisResult = session('analysisResult');
+        return view('dashboard.detection', compact('analysisResult'));
     }
+
+    /**
+     * Menyimpan hasil analisis ke database.
+     */
     public function save(Request $request)
     {
         $request->validate([
@@ -26,7 +36,8 @@ class DetectionController extends Controller
             'recommendation' => 'required|string',
         ]);
 
-        $result = DetectionResult::create([
+        DetectionResult::create([
+            'user_id' => Auth::id(),
             'name' => $request->name,
             'age' => $request->age,
             'gender' => $request->gender,
@@ -36,62 +47,59 @@ class DetectionController extends Controller
             'recommendation' => $request->recommendation,
         ]);
 
-        session()->forget('analysisResult'); // bersihkan setelah disimpan
+        session()->forget('analysisResult');
 
-        return redirect()->route('dashboard.index')->with('success', 'Hasil berhasil disimpan!');
+        return redirect()->route('dashboard')->with('success', 'Hasil berhasil disimpan!');
     }
 
-    public function detectionForm(Request $request)
-    {
-        $analysisResult = session('analysisResult');
-        return view('dashboard.detection', compact('analysisResult'));
-    }
-
-
+    /**
+     * Menganalisis gambar yang diupload dan menyimpan hasilnya ke session.
+     */
     public function analyze(Request $request)
-        {
-            $request->validate([
-                'name' => 'required|string|max:255',
-                'age' => 'required|integer|min:1|max:120',
-                'gender' => 'required|in:male,female',
-                'symptoms' => 'required|string',
-                'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            ]);
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'age' => 'required|integer|min:1|max:120',
+            'gender' => 'required|in:male,female',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
 
-            // Upload gambar
-            $image = $request->file('image');
-            $imagePath = $image->store('image', 'public');
+        $image = $request->file('image');
+        $imagePath = $image->store('image', 'public');
 
-            try {
-                $response = Http::attach(
-                    'image',
-                    fopen($image->getRealPath(), 'r'),
-                    $image->getClientOriginalName()
-                )->post('https://c7aa-103-189-207-206.ngrok-free.app/predict');
+        try {
+            // !!! PENTING: Ganti URL ini dengan URL ngrok Anda yang sedang aktif !!!
+            $response = Http::attach(
+                'image',
+                fopen($image->getRealPath(), 'r'),
+                $image->getClientOriginalName()
+            )->post('https://1281-103-189-207-213.ngrok-free.app/predict');
 
-                if ($response->successful()) {
-                    $result = $response->json();
+            if ($response->successful()) {
+                $result = $response->json();
 
-                    $record = new DetectionResult([
-                        'name' => $request->name,
-                        'age' => $request->age,
-                        'gender' => $request->gender,
-                        'predicted_class' => $result['predicted_class'],
-                        'confidence' => $result['confidence'],
-                        'recommendation' => $result['recommendation'],
-                        'image_path' => $imagePath,
-                    ]);
+                $recommendationService = new RecommendationService();
+                $diseaseName = $result['predicted_class'];
+                $recommendationText = $recommendationService->getRecommendation($diseaseName);
 
-                    // Simpan hanya ke session (bukan ke DB langsung)
-                    session(['analysisResult' => $record]);
+                $record = new DetectionResult([
+                    'name' => $request->name,
+                    'age' => $request->age,
+                    'gender' => $request->gender,
+                    'predicted_class' => $diseaseName,
+                    'confidence' => $result['confidence'],
+                    'recommendation' => $recommendationText,
+                    'image_path' => $imagePath,
+                ]);
 
-                    return redirect()->route('detection.index'); // Redirect supaya session terbaca
-                } else {
-                    return back()->withErrors(['error' => 'Gagal menghubungi server prediksi.']);
-                }
-            } catch (\Exception $e) {
-                return back()->withErrors(['error' => 'Server error: ' . $e->getMessage()]);
+                session(['analysisResult' => $record]);
+
+                return redirect()->route('detection');
+            } else {
+                return back()->withErrors(['error' => 'Gagal menghubungi server prediksi.']);
             }
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Server error: ' . $e->getMessage()]);
         }
-
+    }
 }

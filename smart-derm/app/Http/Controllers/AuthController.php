@@ -52,4 +52,9 @@ class AuthController extends Controller
 
         return redirect()->route('auth');
     }
+
+    public function showLoginForm()
+    {
+    return view('login');
+    }
 }
