@@ -20,8 +20,13 @@ body.modal-open {
 }
 
 .detection-container {
+    padding: 0 50px;
     padding-bottom: 40px;
 }
+.detection-container h1 {
+    padding: 0 70px;
+}
+
 
 
 .detection-container::before {
@@ -78,6 +83,7 @@ body.modal-open {
 }
 
 .nav-back i {
+    padding: 0 70px;
     font-size: 1.2rem;
 }
 

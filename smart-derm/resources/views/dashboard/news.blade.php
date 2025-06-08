@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<link rel="stylesheet" href="{{ asset('css/news.css') }}">
+@vite('resources/css/news.css')
 <div class="news-container">
     <!-- Navigation -->
     <nav class="page-nav">

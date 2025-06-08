@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<link rel="stylesheet" href="{{ asset('css/history.css') }}">
+@vite('resources/css/history.css')
+@vite('resources/js/history.js')
 @if(session('success'))
     <div class="alert alert-success">
         {{ session('success') }}

@@ -1,8 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-
-<link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+@vite('resources/css/dashboard.css')
 <header class="dashboard-header">
   <div class="header-left">
     <h2>Selamat Datang, <strong>{{ Auth::user()->name }}</strong>!</h2>

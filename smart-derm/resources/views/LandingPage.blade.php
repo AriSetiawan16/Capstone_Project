@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
-<link rel="stylesheet" href="{{ asset('css/LandingPage.css') }}">
-<script src="{{ asset('js/LandingPage.js') }}"></script>
+@vite('resources/css/Landingpage.css')
+@vite('resources/js/Landingpage.js')
 <nav class="navbar">
     <div class="container">
         <a href="#" class="logo">SmartDerm</a>

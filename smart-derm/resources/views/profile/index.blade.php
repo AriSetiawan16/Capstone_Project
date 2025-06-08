@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<link rel="stylesheet" href="{{ asset('css/profile.css') }}">
-<script src="{{ asset('js/profile.js') }}"></script>
+@vite('resources/css/profile.css')
+@vite('resources/js/profile.js')
 <div class="profile-container">
     <!-- Alert Messages -->
     @if(session('success'))

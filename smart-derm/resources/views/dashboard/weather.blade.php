@@ -1,15 +1,8 @@
-{{-- <!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Informasi Cuaca & Indeks UV</title>
-   
-</head> --}}
+
 @extends('layouts.app')
 
 @section('content')
-<link rel="stylesheet" href="{{ asset('css/weather.css') }}">
+@vite('resources/css/weather.css')
 <div class="header-buttons">
             <a href="{{ route('dashboard') }}" class="btn primary-btn">
                 <i class="fas fa-arrow-left"></i>
