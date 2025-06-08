@@ -1,0 +1,36 @@
+services:
+  - type: web
+    name: laravel-app
+    runtime: docker
+    repo: https://github.com/AriSetiawan16/Capstone_Project.git
+    branch: main
+    plan: free
+    autoDeploy: true
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_KEY
+        generateValue: true
+      - key: APP_DEBUG
+        value: false
+      - key: LOG_CHANNEL
+        value: stderr
+      - key: DB_CONNECTION
+        value: mysql
+      - key: DB_HOST
+        fromService:
+          type: pserv
+          name: laravel-db
+      - key: DB_DATABASE
+        value: laravel
+      - key: DB_USERNAME
+        value: root
+      - key: DB_PASSWORD
+        generateValue: true
+    dockerContext: .
+    dockerfilePath: ./Dockerfile
+
+databases:
+  - name: laravel-db
+    databaseName: laravel
+    user: root
