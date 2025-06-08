@@ -129,6 +129,7 @@
                         @endforeach
                     </div>
                     @endif
+               
 
                 <!-- Info Koordinat -->
                 @if(isset($coordinates))
@@ -175,6 +176,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const autoLocationBtn = document.createElement('button');
     autoLocationBtn.type = 'button';
     autoLocationBtn.className = 'btn btn-success';
+     autoLocationBtn.innerHTML = '📍 Gunakan Lokasi Saya';
     autoLocationBtn.style.marginTop = '10px';
     autoLocationBtn.style.width = '100%';
     autoLocationBtn.onclick = getCurrentLocation;

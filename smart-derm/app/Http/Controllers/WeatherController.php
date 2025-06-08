@@ -75,6 +75,7 @@ class WeatherController extends Controller
 
             // Saran tambahan berdasarkan cuaca
             $additionalAdvice = $this->getWeatherAdvice($temperature, $humidity, $windSpeed);
+     
             return view('dashboard.weather', [
                 'cityName' => $cityName,
                 'weather' => ucfirst($weather),

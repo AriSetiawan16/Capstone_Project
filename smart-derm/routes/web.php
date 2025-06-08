@@ -13,6 +13,7 @@ use App\Http\Controllers\PredictionController;
 use App\Http\Controllers\LandingPageController;
 
 // Halaman login/register (form UI)
+
 Route::get('/auth', function () {
     return view('login');
 })->name('auth');
