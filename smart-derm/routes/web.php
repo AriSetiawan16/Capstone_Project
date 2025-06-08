@@ -33,7 +33,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/detection/analyze', [DetectionController::class, 'analyze'])->name('detection.analyze');
     Route::post('/detection/save', [DetectionController::class, 'save'])->name('detection.save'); 
     Route::get('/detection/history', [DetectionController::class, 'history'])->name('detection.history');
-
+    Route::delete('/detection/history/{id}', [DetectionController::class, 'destroy'])->name('destroy');
 
     // News routes
     Route::get('/news', [NewsController::class, 'index'])->name('news');

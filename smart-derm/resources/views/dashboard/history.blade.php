@@ -2,6 +2,11 @@
 
 @section('content')
 <link rel="stylesheet" href="{{ asset('css/history.css') }}">
+@if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
 <div class="container">
     <div class="history-header">
         <h2 class="history-title">
@@ -32,11 +37,24 @@
                 </div>
                 
                 <div class="history-result">
-                    <div class="result-badge {{ strtolower($item->predicted_class) }}">
-                        <i class="fas fa-diagnoses"></i> {{ $item->predicted_class }}
-                        <span class="confidence">{{ number_format($item->confidence * 100, 2) }}%</span>
+                    <div class="result-info">
+                        <div class="result-badge {{ strtolower($item->predicted_class) }}">
+                            <i class="fas fa-diagnoses"></i> {{ $item->predicted_class }}
+                            <span class="confidence">{{ number_format($item->confidence * 100, 2) }}%</span>
+                        </div>
+                    </div>
+                    <div class="delete-btn-container">
+                        <form action="{{ route('destroy', $item->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus riwayat ini?')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash-alt"></i> 
+                            </button>
+                        </form>
                     </div>
                 </div>
+
+
                 
                 <div class="history-recommendation">
                     <h4><i class="fas fa-comment-medical"></i> Rekomendasi:</h4>
@@ -58,3 +76,6 @@
     @endforelse
 </div>
 @endsection
+<div id="success-toast" class="toast-success">
+    <i class="fas fa-check-circle"></i> Riwayat berhasil dihapus!
+</div>

@@ -106,5 +106,17 @@ class DetectionController extends Controller
         $histories = DetectionResult::latest()->get(); 
         return view('dashboard.history', compact('histories'));
     }
+    public function destroy($id)
+    {
+        $history = DetectionResult::findOrFail($id);
+
+        if ($history->image_path && Storage::exists('public/' . $history->image_path)) {
+            Storage::delete('public/' . $history->image_path);
+        }
+
+        $history->delete();
+
+        return redirect()->back()->with('success', 'Riwayat berhasil dihapus.');
+    }
 
 }
