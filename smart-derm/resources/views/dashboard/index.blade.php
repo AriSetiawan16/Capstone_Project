@@ -74,6 +74,26 @@
                 </div>
             </div>
         </div>
+      <div class="feature-card weather-card">
+        <div class="feature-icon">
+            <i class="fas fa-sun"></i>
+        </div>
+        <div class="feature-content">
+            <h2>Cek Cuaca & Indeks UV</h2>
+            <p>Ketahui kondisi cuaca terkini dan tingkat paparan sinar UV di lokasi Anda untuk melindungi kesehatan kulit.</p>
+            <ul class="feature-list">
+                <li><i class="fas fa-check"></i> Informasi suhu, kelembapan, dan angin</li>
+                <li><i class="fas fa-check"></i> Indeks UV harian dan peringatan</li>
+                <li><i class="fas fa-check"></i> Rekomendasi perlindungan kulit</li>
+            </ul>
+        </div>
+        <div class="feature-action">
+            <a href="{{ route('weather.show') }}" class="btn btn-info mt-3">
+                <i class="fas fa-sun"></i> Cek Cuaca & UV
+            </a>
+        </div>
+    </div>
+
 
         <div class="story-history-section">
         <h3><i class="fas fa-history"></i> Riwayat Deteksi</h3>

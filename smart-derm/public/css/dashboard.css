@@ -6,6 +6,10 @@
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
 }
+.feature-card {
+    margin-bottom: 3rem; /* Tambah jarak antar fitur */
+}
+
 
 body {
     min-height: 100vh;

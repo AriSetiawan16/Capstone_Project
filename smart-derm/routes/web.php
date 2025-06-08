@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\WeatherController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DetectionController;
 use App\Http\Controllers\PredictionController;
@@ -50,5 +51,36 @@ Route::middleware('auth')->group(function () {
 
 });
 
-// Route ini mungkin tidak lagi digunakan jika Anda mengikuti alur dari DetectionController
-//Route::post('/predict', [PredictionController::class, 'getPrediction']);
+Route::get('/weather', [WeatherController::class, 'show'])->name('weather.show');
+
+Route::get('/weather/city', [WeatherController::class, 'showByCity'])->name('weather.city');
+
+Route::get('/api/weather', [WeatherController::class, 'apiWeather'])->name('api.weather');
+
+Route::get('/weather/test', function() {
+    $apiKey = env('OPENWEATHER_API_KEY');
+    
+    if (!$apiKey) {
+        return response()->json(['error' => 'API Key tidak ditemukan dalam file .env']);
+    }
+    
+    $response = Http::get("https://api.openweathermap.org/data/2.5/weather", [
+        'q' => 'Jakarta',
+        'appid' => $apiKey,
+        'units' => 'metric'
+    ]);
+    
+    if ($response->successful()) {
+        return response()->json([
+            'status' => 'success',
+            'message' => 'API Key berfungsi dengan baik!',
+            'sample_data' => $response->json()
+        ]);
+    } else {
+        return response()->json([
+            'status' => 'error', 
+            'message' => 'API Key tidak valid atau ada masalah lain',
+            'error_detail' => $response->json()
+        ]);
+    }
+})->name('weather.test');
