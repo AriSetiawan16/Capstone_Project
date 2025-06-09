@@ -776,6 +776,50 @@ body {
 }
 
 /* ============================
+   REKOMENDASI (dan Deskripsi)
+=============================== */
+.recommendation-section,
+.description-section { /* Menargetkan kedua section agar sama */
+    margin-top: 2rem;
+}
+
+.recommendation-section h4,
+.description-section h4 { /* Menargetkan kedua judul agar sama */
+    color: var(--secondary);
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--light-gray);
+    padding-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.recommendation-content,
+.description-content { /* Menargetkan kedua konten agar sama */
+    background: var(--light-bg);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    color: var(--text);
+    line-height: 1.7;
+    border-left: 4px solid var(--primary);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.04);
+}
+
+.recommendation-content ul,
+.description-content ul {
+    padding-left: 20px;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.recommendation-content strong,
+.description-content strong {
+    color: var(--secondary);
+    font-weight: 600;
+}
+
+/* ============================
    REKOMENDASI
 =============================== */
 .recommendation-content {

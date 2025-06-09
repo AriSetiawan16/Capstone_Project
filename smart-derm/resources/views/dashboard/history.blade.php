@@ -32,11 +32,11 @@
                         <i class="fas fa-birthday-cake"></i> {{ $item->age }} tahun
                     </span>
                     <span class="meta-item">
-                        <i class="fas fa-{{ $item->gender === 'male' ? 'male' : 'female' }}"></i> 
+                        <i class="fas fa-{{ $item->gender === 'male' ? 'male' : 'female' }}"></i>
                         {{ ucfirst($item->gender) }}
                     </span>
                 </div>
-                
+
                 <div class="history-result">
                     <div class="result-info">
                         <div class="result-badge {{ strtolower($item->predicted_class) }}">
@@ -49,21 +49,26 @@
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-sm">
-                                <i class="fas fa-trash-alt"></i> 
+                                <i class="fas fa-trash-alt"></i>
                             </button>
                         </form>
                     </div>
                 </div>
 
+                <div class="history-description">
+                    <h4><i class="fas fa-info-circle"></i> Deskripsi Penyakit:</h4>
+                    <div class="description-text">
+                        {!! $item->description !!}
+                    </div>
+                </div>
 
-                
                 <div class="history-recommendation">
                     <h4><i class="fas fa-comment-medical"></i> Rekomendasi:</h4>
                     <div class="recommendation-text">
                         {!! $item->recommendation !!}
                     </div>
                 </div>
-                
+
                 <div class="history-footer">
                     <i class="far fa-clock"></i> Dianalisis: {{ $item->created_at->diffForHumans() }}
                 </div>
@@ -77,6 +82,3 @@
     @endforelse
 </div>
 @endsection
-<div id="success-toast" class="toast-success">
-    <i class="fas fa-check-circle"></i> Riwayat berhasil dihapus!
-</div>

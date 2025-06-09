@@ -42,9 +42,9 @@
 
 
     <div class="dashboard-container">
-        <div id="sidebarOverlay" class="sidebar-overlay"></div> 
+        <div id="sidebarOverlay" class="sidebar-overlay"></div>
         <!-- Header -->
-        
+
 
         <!-- Main Features -->
         <main class="dashboard-main">
@@ -157,8 +157,13 @@
                         </div>
 
                         <div class="detail-item">
+                            <span class="detail-label"><i class="fas fa-info-circle"></i> Deskripsi:</span>
+                            <span class="detail-value">{!! $last_detection->description !!}</span>
+                        </div>
+
+                        <div class="detail-item">
                             <span class="detail-label"><i class="fas fa-comment-medical"></i> Rekomendasi:</span>
-                            <span class="detail-value">{{ $last_detection->recommendation }}</span>
+                            <span class="detail-value">{!! $last_detection->recommendation !!}</span>
                         </div>
                     </div>
                 </div>

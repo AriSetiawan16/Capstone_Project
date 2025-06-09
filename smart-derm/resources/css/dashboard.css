@@ -260,79 +260,189 @@ body {
     border-radius: var(--radius);
     padding: 2rem;
     box-shadow: var(--shadow);
+    margin-top: 2rem; /* <-- MEMBERI JARAK DARI KARTU CUACA */
 }
+
 .story-history-section h3 {
     color: var(--secondary);
     font-size: 1.5rem;
     padding-bottom: 1rem;
     border-bottom: 1px solid var(--light-gray);
     margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
 }
 
 .last-detection-card {
     border: 1px solid var(--light-gray);
-    border-radius: 10px;
+    border-radius: var(--radius);
     overflow: hidden;
 }
+
 .detection-header {
     background: var(--light-bg);
     padding: 1rem 1.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
 }
+
 .detection-header h4 {
     margin: 0;
     color: var(--secondary);
-    font-size: 1rem;
-}
-.detection-time { color: var(--text-light); font-size: 0.85rem; }
-
-.detection-content { display: flex; flex-wrap: wrap; }
-.detection-image {
-    flex: 1;
-    min-width: 200px;
-    padding: 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 0.5rem;
 }
-.detection-image img { max-width: 100%; max-height: 180px; border-radius: var(--radius); }
-.detection-details { flex: 2; padding: 1.5rem; }
 
-.detail-label { color: var(--primary-dark); font-weight: 500; }
-.detail-value { color: var(--text-light); }
-.confidence-level { background: linear-gradient(90deg, var(--primary-light), var(--primary)); }
+.detection-time {
+    color: var(--text-light);
+    font-size: 0.85rem;
+}
 
+.detection-content {
+    display: flex;
+    flex-wrap: wrap; /* Izinkan wrap jika layar sempit */
+    padding: 1.5rem;
+    gap: 2rem; /* Jarak antara gambar dan detail */
+}
+
+.detection-image {
+    flex: 1; /* Biarkan gambar mengambil sebagian ruang */
+    min-width: 250px; /* Lebar minimum untuk gambar */
+    max-width: 300px; /* Lebar maksimum untuk gambar */
+    align-self: flex-start; /* Jaga agar gambar tetap di atas */
+}
+
+.detection-image img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--light-gray);
+}
+.no-image {
+    width: 100%;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--light-bg);
+    border-radius: var(--radius);
+    color: var(--text-light);
+}
+.no-image i { font-size: 3rem; margin-bottom: 1rem; }
+
+.detection-details {
+    flex: 2; /* Biarkan detail mengambil ruang lebih banyak */
+    min-width: 300px; /* Lebar minimum agar tidak terlalu sempit */
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem; /* Jarak antar item detail */
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column; /* Label di atas, value di bawah */
+    gap: 0.25rem;
+}
+
+.detail-label {
+    color: var(--primary-dark);
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.detail-value {
+    color: var(--text);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    padding-left: 1.5rem; /* Indentasi agar rapi di bawah ikon label */
+}
+
+.detail-value .confidence-bar {
+    background: var(--light-gray);
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 0.5rem;
+}
+
+.detail-value .confidence-level {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-light), var(--primary));
+    border-radius: 4px;
+    transition: width 1s ease;
+}
+
+/* Penyesuaian untuk Rekomendasi & Deskripsi */
+.detail-value ul {
+    padding-left: 20px;
+    margin: 0.5rem 0 0 0;
+}
+
+/* KODE DIPERBAIKI: Tombol Aksi */
 .detection-actions {
     display: flex;
     flex-wrap: wrap;
     padding: 1rem 1.5rem;
     background: var(--light-bg);
+    border-top: 1px solid var(--light-gray);
     gap: 1rem;
 }
 
-/* Menyesuaikan tombol di riwayat */
 .btn-view-details, .btn-new-analysis {
-    padding: 10px 25px;
+    padding: 10px 20px;
     border-radius: 30px;
     text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: var(--transition);
+    border: none;
 }
+
 .btn-view-details {
     background: var(--primary);
     color: var(--white);
-    border: none;
 }
-.btn-view-details:hover { background: var(--primary-dark); }
+.btn-view-details:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
 .btn-new-analysis {
     background: transparent;
     color: var(--primary);
-    border: 2px solid var(--primary);
+    border: 2px solid var(--primary-light);
 }
-.btn-new-analysis:hover { background: var(--primary-light); }
+.btn-new-analysis:hover {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+}
 
-.history-empty { text-align: center; padding: 3rem 1rem; color: var(--text-light); }
-.history-empty i { font-size: 3rem; margin-bottom: 1rem; }
+.history-empty {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--text-light);
+}
+.history-empty i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
 
 /* ============================
    RESPONSIVE DESIGN
@@ -342,8 +452,8 @@ body {
     .hamburger { display: block; }
     .mobile-actions { display: flex; }
 }
+
 @media (max-width: 768px) {
     .dashboard-header { flex-direction: row; }
     .features-grid { grid-template-columns: 1fr; }
-    .detection-content { flex-direction: column; }
 }
