@@ -72,7 +72,7 @@ class DetectionController extends Controller
                 'image',
                 fopen($image->getRealPath(), 'r'),
                 $image->getClientOriginalName()
-            )->post('https://0beb-103-189-207-213.ngrok-free.app/predict');
+            )->post('https://0e53-103-189-207-213.ngrok-free.app/predict');
 
             if ($response->successful()) {
                 $result = $response->json();
