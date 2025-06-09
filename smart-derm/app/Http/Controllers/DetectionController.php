@@ -72,7 +72,7 @@ class DetectionController extends Controller
                 'image',
                 fopen($image->getRealPath(), 'r'),
                 $image->getClientOriginalName()
-            )->post('http://localhost:5000/predict');
+            )->post('https://0beb-103-189-207-213.ngrok-free.app/predict');
 
             if ($response->successful()) {
                 $result = $response->json();
@@ -103,7 +103,7 @@ class DetectionController extends Controller
     }
     public function history()
     {
-        $histories = DetectionResult::latest()->get(); 
+        $histories = DetectionResult::latest()->get();
         return view('dashboard.history', compact('histories'));
     }
     public function destroy($id)

@@ -4,7 +4,26 @@
 @vite('resources/css/detection.css')
 @vite('resources/js/detection.js')
 
-<div class="detection-container"    >
+<div class="detection-container">
+    {{-- ================================================================== --}}
+    {{-- KODE BARU: Blok HTML untuk loading overlay ditambahkan di sini --}}
+    {{-- ================================================================== --}}
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="loading-content">
+            <div class="loading-spinner">
+                <div class="spinner-circle"></div>
+                <div class="spinner-circle"></div>
+                <div class="spinner-circle"></div>
+                <div class="spinner-circle"></div>
+            </div>
+            <p class="loading-text">Menganalisis Gambar Anda...</p>
+            <p class="progress-text">Proses ini mungkin memakan waktu beberapa saat. Mohon jangan menutup halaman ini.</p>
+        </div>
+    </div>
+    {{-- ================================================================== --}}
+    {{-- AKHIR DARI KODE BARU                                              --}}
+    {{-- ================================================================== --}}
+
     <nav class="page-nav">
         <a href="{{ route('dashboard') }}" class="nav-back">
             <i class="fas fa-arrow-left"></i>

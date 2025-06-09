@@ -10,6 +10,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const newAnalysisBtn = document.getElementById('newAnalysisBtn');
     const body = document.body;
 
+    // ==================================================================
+    // KODE BARU: Dapatkan elemen form dan loading overlay
+    // ==================================================================
+    const detectionForm = document.getElementById('detectionForm');
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    // ==================================================================
+
     // --- Fungsi Bantuan ---
     const openPopup = () => {
         if (!resultContainer) return; // Jika tidak ada elemen, jangan lakukan apa-apa
@@ -31,6 +38,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // --- Logika Utama ---
 
+    // ==================================================================
+    // KODE BARU: Tambahkan event listener untuk form submission
+    // ==================================================================
+    if (detectionForm) {
+        detectionForm.addEventListener('submit', function() {
+            // Tampilkan loading overlay ketika form disubmit
+            if (loadingOverlay) {
+                loadingOverlay.style.display = 'flex';
+            }
+        });
+    }
+    // ==================================================================
+
     // 1. Cek saat halaman dimuat, jika hasil ada, tampilkan pop-up
     if (resultContainer && window.getComputedStyle(resultContainer).display === 'flex') {
         openPopup();
@@ -42,30 +62,20 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // 3. Event listener untuk tombol Analisis Baru
-// KODE BARU (TANPA RELOAD)
-if (newAnalysisBtn) {
-    newAnalysisBtn.addEventListener('click', function() {
-        // 1. Panggil fungsi untuk menutup pop-up secara halus
-        closePopup();
-
-        // 2. Reset input file gambar agar formulir bersih
-        if (imageInput) {
-            imageInput.value = ''; // Menghapus file yang dipilih
-        }
-        if (previewImg) {
-            previewImg.src = ''; // Menghapus sumber gambar preview
-        }
-        if (imagePreview) {
-            imagePreview.style.display = 'none'; // Menyembunyikan area preview
-        }
-
-        // Opsional: Anda juga bisa mereset input nama dan usia jika mau
-        // const nameInput = document.getElementById('name');
-        // const ageInput = document.getElementById('age');
-        // if(nameInput) nameInput.value = '';
-        // if(ageInput) ageInput.value = '';
-    });
-}
+    if (newAnalysisBtn) {
+        newAnalysisBtn.addEventListener('click', function() {
+            closePopup();
+            if (imageInput) {
+                imageInput.value = '';
+            }
+            if (previewImg) {
+                previewImg.src = '';
+            }
+            if (imagePreview) {
+                imagePreview.style.display = 'none';
+            }
+        });
+    }
 
     // 4. Logika untuk preview gambar
     if (imageInput) {
