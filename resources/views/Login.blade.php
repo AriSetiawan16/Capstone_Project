@@ -42,9 +42,6 @@
                     @endif
 
                     <button type="submit" class="submit-btn">Sign In</button>
-                    <div class="form-footer">
-                        <a href="#" class="forgot-password">Forgot password?</a>
-                    </div>
                 </form>
 
                 <!-- Register Form -->
