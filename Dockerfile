@@ -1,37 +1,38 @@
-# Gunakan image PHP versi 8.3 dengan Composer
+# Stage 1: Composer
 FROM composer:2.7 AS composer
 
-# Base PHP image
-FROM php:8.3-cli
+# Stage 2: Laravel + Apache + Node.js + Vite
+FROM php:8.3-apache
 
-# Install dependency system
+# Install system dependencies & PHP extensions
 RUN apt-get update && apt-get install -y \
-    unzip \
-    git \
-    curl \
-    libpng-dev \
-    libonig-dev \
-    libxml2-dev \
-    zip \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
-
-# Salin composer dari stage sebelumnya
-COPY --from=composer /usr/bin/composer /usr/bin/composer
+    unzip git curl libpng-dev libonig-dev libxml2-dev zip \
+    gnupg lsb-release ca-certificates \
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd \
+    && curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
+    && apt-get install -y nodejs \
+    && npm install -g vite
 
 # Set working directory
-WORKDIR /var/www
+WORKDIR /var/www/html
 
-# Copy semua file project ke container
+# Copy composer
+COPY --from=composer /usr/bin/composer /usr/bin/composer
+
+# Copy project
 COPY . .
 
-# Install dependency Laravel
+# Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# Generate APP_KEY otomatis saat build (optional)
-RUN php artisan key:generate
+# Install Node.js dependencies & build
+RUN npm install --legacy-peer-deps --no-cache && npm run build
 
-# Expose port 8000 untuk php artisan serve
-EXPOSE 8000
+# Berikan permission pada storage dan bootstrap/cache
+RUN chmod -R 777 storage bootstrap/cache
 
-# Command untuk menjalankan Laravel
-CMD php artisan serve --host=0.0.0.0 --port=8000
+# Aktifkan mod_rewrite untuk Laravel routing
+RUN a2enmod rewrite
+
+# Jalankan migrasi database dan start Apache
+CMD php artisan migrate --force && apache2-foreground
