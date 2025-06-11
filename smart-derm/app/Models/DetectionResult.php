@@ -13,6 +13,7 @@ class DetectionResult extends Model
         'gender',
         'predicted_class',
         'confidence',
+        'description',
         'recommendation',
         'image_path',
     ];

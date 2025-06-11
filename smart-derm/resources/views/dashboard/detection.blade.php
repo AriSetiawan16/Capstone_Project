@@ -5,9 +5,6 @@
 @vite('resources/js/detection.js')
 
 <div class="detection-container">
-    {{-- ================================================================== --}}
-    {{-- KODE BARU: Blok HTML untuk loading overlay ditambahkan di sini --}}
-    {{-- ================================================================== --}}
     <div id="loadingOverlay" class="loading-overlay" style="display: none;">
         <div class="loading-content">
             <div class="loading-spinner">
@@ -20,9 +17,6 @@
             <p class="progress-text">Proses ini mungkin memakan waktu beberapa saat. Mohon jangan menutup halaman ini.</p>
         </div>
     </div>
-    {{-- ================================================================== --}}
-    {{-- AKHIR DARI KODE BARU                                              --}}
-    {{-- ================================================================== --}}
 
     <nav class="page-nav">
         <a href="{{ route('dashboard') }}" class="nav-back">
@@ -53,7 +47,7 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="name"><i class="fas fa-user"></i> Nama Lengkap</label>
-                            <input type="text" name="name" id="name" value="{{ old('name') }}" required>
+                            <input type="text" name="name" id="name" value="{{ old('name', Auth::user()->name) }}" required>
                             @error('name')<span class="error-text">{{ $message }}</span>@enderror
                         </div>
                         <div class="form-group">
@@ -91,17 +85,9 @@
                 </div>
             </form>
         </div>
-
-        <div class="tips-card">
-            <h3><i class="fas fa-lightbulb"></i> Tips untuk Hasil Terbaik</h3>
-             <ul class="tips-list">
-                <li><i class="fas fa-check-circle"></i> Pastikan gambar jelas dan tidak blur</li>
-                <li><i class="fas fa-check-circle"></i> Ambil foto dengan pencahayaan yang cukup</li>
-                <li><i class="fas fa-check-circle"></i> Fokus pada area kulit yang bermasalah</li>
-            </ul>
-        </div>
     </div>
 
+    {{-- Pop-up Hasil Analisis --}}
     <div id="resultContainer" class="result-overlay" style="display: {{ !empty($analysisResult) ? 'flex' : 'none' }};">
         <div class="result-content">
             <button type="button" id="closeResultBtn" class="close-btn"><i class="fas fa-times"></i></button>
@@ -131,10 +117,21 @@
                             </div>
                         </div>
                     </div>
+
+                    {{-- ================================================================== --}}
+                    {{-- KODE BARU: Menambahkan bagian untuk menampilkan deskripsi/ringkasan --}}
+                    {{-- ================================================================== --}}
+                    <div class="description-section">
+                        <h4>Penjelasan Penyakit</h4>
+                        <div class="description-content">{!! $analysisResult->description !!}</div>
+                    </div>
+                    {{-- ================================================================== --}}
+
                     <div class="recommendation-section">
                         <h4>Rekomendasi</h4>
                         <div class="recommendation-content">{!! $analysisResult->recommendation !!}</div>
                     </div>
+
                     <div class="action-buttons">
                         <form method="POST" action="{{ route('detection.save') }}">
                             @csrf
@@ -144,6 +141,8 @@
                             <input type="hidden" name="predicted_class" value="{{ $analysisResult->predicted_class }}">
                             <input type="hidden" name="confidence" value="{{ $analysisResult->confidence }}">
                             <input type="hidden" name="image_path" value="{{ $analysisResult->image_path }}">
+                            {{-- KODE BARU: Menambahkan input hidden untuk description --}}
+                            <input type="hidden" name="description" value="{{ $analysisResult->description }}">
                             <input type="hidden" name="recommendation" value="{{ $analysisResult->recommendation }}">
                             <button type="submit" class="btn btn-secondary"><i class="fas fa-save"></i> Simpan Hasil</button>
                         </form>
@@ -157,5 +156,4 @@
         </div>
     </div>
 </div>
-
 @endsection

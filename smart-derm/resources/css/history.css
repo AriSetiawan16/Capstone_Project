@@ -32,25 +32,19 @@ body {
     color: var(--text);
 }
 
-/* ============================
-   CONTAINER & LAYOUT
-=============================== */
 .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 2rem 1.5rem;
 }
 
-/* ============================
-   HEADER - MINIMAL & ELEGANT
-=============================== */
 .history-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 3rem;
     padding-bottom: 1.5rem;
-    border-bottom: 1px solid rgba(0, 180, 216, 0.1);
+    border-bottom: 1px solid var(--light-gray);
     flex-wrap: wrap;
     gap: 1.5rem;
 }
@@ -63,7 +57,6 @@ body {
     display: flex;
     align-items: center;
     gap: 15px;
-    letter-spacing: -0.02em;
 }
 
 .history-title i {
@@ -72,9 +65,9 @@ body {
 }
 
 .btn-back {
-    background: rgba(0, 180, 216, 0.1);
+    background: var(--white);
     color: var(--primary-dark);
-    border: 1px solid rgba(0, 180, 216, 0.2);
+    border: 1px solid var(--light-gray);
     padding: 12px 24px;
     border-radius: 50px;
     display: flex;
@@ -84,18 +77,16 @@ body {
     font-weight: 500;
     font-size: 0.95rem;
     transition: var(--transition);
-    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-soft);
 }
 
 .btn-back:hover {
-    background: rgba(0, 180, 216, 0.15);
-    transform: translateX(-3px);
+    background: var(--primary-light);
+    transform: translateY(-2px);
     border-color: var(--primary-light);
+    color: var(--primary-dark);
 }
 
-/* ============================
-   HISTORY CARDS - CLEAN & ELEGANT
-=============================== */
 .history-card {
     display: flex;
     background: var(--white);
@@ -104,24 +95,22 @@ body {
     margin-bottom: 2rem;
     overflow: hidden;
     transition: var(--transition);
-    border: 1px solid rgba(255, 255, 255, 0.8);
+    border: 1px solid var(--light-gray);
 }
 
 .history-card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-5px);
     box-shadow: var(--shadow-hover);
+    border-color: var(--primary-light);
 }
 
-/* Image Container - Soft & Elegant */
 .history-image-container {
-    flex: 0 0 280px;
-    height: 280px;
+    flex: 0 0 250px; /* Lebar gambar sedikit lebih kecil agar konten lebih luas */
     overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, rgba(0, 180, 216, 0.05) 0%, rgba(144, 224, 239, 0.1) 100%);
-    position: relative;
+    background: var(--light-bg);
 }
 
 .history-image {
@@ -129,42 +118,36 @@ body {
     height: 100%;
     object-fit: cover;
     transition: transform 0.4s ease;
-    filter: brightness(1.02) contrast(1.05);
 }
 
 .history-card:hover .history-image {
-    transform: scale(1.03);
+    transform: scale(1.05);
 }
 
-/* Content Section - Spacious & Clean */
 .history-content {
     flex: 1;
     padding: 2rem;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
 }
 
-/* ============================
-   META INFORMATION - SUBTLE
-=============================== */
 .history-meta {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
+    margin-bottom: 1rem; /* Memberi jarak ke bawah */
 }
 
 .meta-item {
     display: flex;
     align-items: center;
-    gap: 6px;
-    background: rgba(0, 180, 216, 0.08);
+    gap: 8px;
+    background: var(--light-bg);
     color: var(--text);
     padding: 6px 14px;
     border-radius: 20px;
     font-size: 0.85rem;
     font-weight: 500;
-    transition: var(--transition);
 }
 
 .meta-item i {
@@ -172,141 +155,121 @@ body {
     font-size: 0.9rem;
 }
 
-/* ============================
-   RESULT SECTION - CLEAN
-=============================== */
 .history-result {
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
     gap: 1rem;
+    margin-bottom: 1.5rem; /* Memberi jarak ke bawah */
+    padding-bottom: 1.5rem; /* Memberi jarak ke bawah */
+    border-bottom: 1px dashed var(--light-gray); /* Garis pemisah */
 }
 
 .result-info {
-    flex: 1;
+    flex-grow: 1;
 }
 
 .result-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
+    display: inline-block; /* Agar tidak selebar kontainer */
     padding: 10px 18px;
     border-radius: 25px;
     font-weight: 600;
-    font-size: 0.95rem;
+    font-size: 1rem;
     color: var(--white);
-    transition: var(--transition);
+    background: var(--secondary); /* Warna default */
 }
 
-.result-badge.normal {
-    background: var(--success);
-}
-
-.result-badge:not(.normal) {
-    background: var(--danger);
-}
-
-.confidence {
-    background: rgba(255, 255, 255, 0.25);
+.result-badge .confidence {
+    background: rgba(255, 255, 255, 0.2);
     padding: 3px 10px;
     border-radius: 12px;
     font-size: 0.8rem;
     font-weight: 500;
+    margin-left: 10px;
 }
 
-/* Delete Button - Minimal */
 .delete-btn-container {
-    display: flex;
-    align-items: center;
+    flex-shrink: 0;
 }
 
 .btn-danger {
-    background: rgba(220, 53, 69, 0.1);
-    border: 1px solid rgba(220, 53, 69, 0.2);
+    background: rgba(220, 53, 69, 0.08);
+    border: 1px solid transparent;
     color: var(--danger);
-    padding: 8px 12px;
-    border-radius: 12px;
+    width: 40px; /* Membuat tombol jadi lingkaran */
+    height: 40px;
+    border-radius: 50%;
     cursor: pointer;
-    font-size: 0.9rem;
+    font-size: 1rem;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    justify-content: center;
     transition: var(--transition);
 }
 
 .btn-danger:hover {
-    background: rgba(220, 53, 69, 0.15);
-    border-color: rgba(220, 53, 69, 0.3);
-    transform: translateY(-1px);
+    background: var(--danger);
+    color: var(--white);
+    border-color: var(--danger);
+    transform: translateY(-2px) scale(1.05);
 }
 
-/* ============================
-   RECOMMENDATION - ELEGANT
-=============================== */
+/* ========================================================== */
+/* KODE BARU & DIPERBAIKI: Untuk Deskripsi dan Rekomendasi     */
+/* ========================================================== */
+.history-description,
 .history-recommendation {
-    flex-grow: 1;
-    background: rgba(0, 180, 216, 0.02);
-    padding: 1.5rem;
-    border-radius: 12px;
+    background: transparent; /* Hapus background agar lebih bersih */
+    padding: 0;
     border-left: 3px solid var(--primary-light);
+    padding-left: 1.5rem;
+    margin-bottom: 1.5rem; /* Jarak antar section */
 }
 
+.history-description h4,
 .history-recommendation h4 {
     color: var(--secondary);
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: 600;
 }
 
+.history-description h4 i,
 .history-recommendation h4 i {
     color: var(--primary);
-    font-size: 1.1rem;
+    font-size: 1.2rem;
 }
 
+.description-text,
 .recommendation-text {
-    color: var(--text);
+    color: var(--text-light); /* Warna teks dibuat lebih lembut */
     line-height: 1.7;
     font-size: 0.95rem;
 }
 
-.recommendation-text p {
-    margin-bottom: 0.8rem;
-}
+.description-text p, .recommendation-text p { margin-bottom: 0.8rem; }
+.description-text ul, .recommendation-text ul { padding-left: 1.2rem; margin-bottom: 0.8rem; }
+.description-text li, .recommendation-text li { margin-bottom: 0.4rem; }
+.description-text strong, .recommendation-text strong { color: var(--text); }
 
-.recommendation-text ul {
-    padding-left: 1.2rem;
-    margin-bottom: 0.8rem;
-}
 
-.recommendation-text li {
-    margin-bottom: 0.4rem;
-}
-
-/* ============================
-   FOOTER - SUBTLE
-=============================== */
 .history-footer {
     color: var(--text-light);
     font-size: 0.85rem;
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
+    margin-top: auto; /* Mendorong footer ke bawah */
     padding-top: 1rem;
-    border-top: 1px solid rgba(0, 0, 0, 0.05);
-    font-weight: 400;
+    border-top: 1px solid var(--light-gray);
 }
 
-.history-footer i {
-    color: var(--primary-light);
-}
+.history-footer i { color: var(--primary); }
 
-/* ============================
-   EMPTY STATE - CLEAN
-=============================== */
 .history-empty {
     text-align: center;
     padding: 4rem 2rem;
@@ -314,64 +277,9 @@ body {
     border-radius: var(--radius);
     box-shadow: var(--shadow-soft);
 }
+.history-empty img { max-width: 280px; margin-bottom: 2rem; opacity: 0.7; }
+.history-empty p { color: var(--text-light); font-size: 1.1rem; font-weight: 400; }
 
-.history-empty img {
-    max-width: 280px;
-    margin-bottom: 2rem;
-    opacity: 0.7;
-}
-
-.history-empty p {
-    color: var(--text-light);
-    font-size: 1.1rem;
-    font-weight: 400;
-}
-
-/* ============================
-   TOAST - ELEGANT
-=============================== */
-.toast-success {
-    position: fixed;
-    top: 2rem;
-    right: 2rem;
-    background: var(--white);
-    color: var(--success);
-    padding: 1rem 1.5rem;
-    border-radius: 12px;
-    font-size: 0.9rem;
-    font-weight: 500;
-    display: none;
-    align-items: center;
-    gap: 10px;
-    z-index: 9999;
-    box-shadow: 0 8px 25px rgba(40, 167, 69, 0.15);
-    border: 1px solid rgba(40, 167, 69, 0.1);
-}
-
-.toast-success i {
-    font-size: 1.1rem;
-}
-
-/* Toast Animation */
-@keyframes slideIn {
-    0% {
-        opacity: 0;
-        transform: translateX(100%);
-    }
-    100% {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-.toast-success.show {
-    display: flex;
-    animation: slideIn 0.3s ease;
-}
-
-/* ============================
-   ALERT - SOFT
-=============================== */
 .alert {
     padding: 1rem 1.5rem;
     border-radius: 12px;
@@ -380,127 +288,21 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
-}
-
-.alert-success {
     background: rgba(40, 167, 69, 0.1);
     color: var(--success);
     border: 1px solid rgba(40, 167, 69, 0.15);
 }
 
-/* ============================
-   RESPONSIVE DESIGN
-=============================== */
 @media (max-width: 1024px) {
-    .container {
-        padding: 1.5rem 1rem;
-    }
-
-    .history-image-container {
-        flex: 0 0 250px;
-        height: 250px;
-    }
+    .history-image-container { flex: 0 0 200px; }
 }
 
 @media (max-width: 768px) {
-    .history-header {
-        flex-direction: column;
-        text-align: center;
-        margin-bottom: 2rem;
-    }
-
-    .history-title {
-        font-size: 1.8rem;
-    }
-
-    .history-card {
-        flex-direction: column;
-        margin-bottom: 1.5rem;
-    }
-
-    .history-image-container {
-        flex: none;
-        width: 100%;
-        height: 200px;
-    }
-
-    .history-content {
-        padding: 1.5rem;
-        gap: 1.2rem;
-    }
-
-    .history-result {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
-    }
-
-    .delete-btn-container {
-        align-self: flex-end;
-        width: 100%;
-        display: flex;
-        justify-content: flex-end;
-    }
-
-    .toast-success {
-        top: 1rem;
-        right: 1rem;
-        left: 1rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .container {
-        padding: 1rem 0.75rem;
-    }
-
-    .history-title {
-        font-size: 1.5rem;
-    }
-
-    .btn-back {
-        padding: 10px 20px;
-        font-size: 0.9rem;
-    }
-
-    .history-content {
-        padding: 1.2rem;
-    }
-
-    .history-recommendation {
-        padding: 1.2rem;
-    }
-
-    .result-badge {
-        font-size: 0.85rem;
-        padding: 8px 14px;
-    }
-
-    .meta-item {
-        font-size: 0.8rem;
-        padding: 5px 12px;
-    }
-}
-
-/* ============================
-   ACCESSIBILITY & FOCUS
-=============================== */
-.btn-back:focus,
-.btn-danger:focus {
-    outline: 2px solid var(--primary-light);
-    outline-offset: 2px;
-}
-
-/* Smooth scrolling */
-html {
-    scroll-behavior: smooth;
-}
-
-/* Remove any jarring transitions on mobile */
-@media (prefers-reduced-motion: reduce) {
-    * {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-    }
+    .history-header { flex-direction: column; text-align: center; margin-bottom: 2rem; }
+    .history-title { font-size: 1.8rem; }
+    .history-card { flex-direction: column; margin-bottom: 1.5rem; }
+    .history-image-container { width: 100%; height: 200px; }
+    .history-content { padding: 1.5rem; }
+    .history-result { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .delete-btn-container { align-self: flex-end; }
 }
