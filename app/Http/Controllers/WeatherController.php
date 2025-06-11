@@ -157,11 +157,7 @@ class WeatherController extends Controller
     {
         $cloudiness = $weatherData['clouds']['all'] ?? 50;
         $hour = date('H');
-<<<<<<< HEAD
         
-=======
-
->>>>>>> ca8d78968f178c4e91f69bfaf127f85211e8dff1
         if ($hour < 7 || $hour > 17) return 0;
         if ($hour >= 10 && $hour <= 14) {
             if ($cloudiness < 25) return 8;
