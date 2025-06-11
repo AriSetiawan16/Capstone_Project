@@ -17,36 +17,53 @@ class DetectionController extends Controller
         return view('dashboard.detection', compact('analysisResult'));
     }
 
-    public function analyze(Request $request)
-    {
-        // 1. Upload gambar ke Hugging Face Space
-        $image = $request->file('image');
+ public function analyze(Request $request)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'age' => 'required|integer|min:1|max:120',
+        'gender' => 'required|in:male,female',
+        'image' => 'required|image|mimes:jpg,jpeg,png,gif|max:2048',
+    ]);
 
-        $uploadResponse = Http::attach(
-            'file',
-            file_get_contents($image->getRealPath()),
-            $image->getClientOriginalName()
-        )->post('https://amdzz-skindisease-space.hf.space/gradio_api/predict/');
+    $image = $request->file('image');
 
-        if (!$uploadResponse->successful()) {
-            return response()->json(['error' => 'Failed to upload image'], 500);
-        }
+    // Simpan gambar ke storage
+    $imagePath = $image->store('detections', 'public');
 
-        $uploadPath = $uploadResponse->json()[0]; // ambil path tmp dari response
+    $response = Http::attach(
+        'file',
+        file_get_contents($image->getRealPath()),
+        $image->getClientOriginalName()
+    )->post('https://amdzz-skindisease-docker.hf.space/predict/');
 
-        // 2. Kirim ke run/predict
-        $predictResponse = Http::post('https://amdzz-skindisease-space.hf.space/gradio_api/predict/', [
-            'data' => [$uploadPath]
-        ]);
-
-        if (!$predictResponse->successful()) {
-            return response()->json(['error' => 'Prediction failed'], 500);
-        }
-
-        $result = $predictResponse->json();
-
-        return response()->json($result);
+    if (!$response->successful()) {
+        return redirect()->back()->withErrors(['error' => 'Proses prediksi gagal. Silakan coba lagi.']);
     }
+
+    $result = $response->json();
+
+    // Ambil label dengan confidence paling tinggi
+    $topPrediction = collect($result)->sortDesc()->take(1)->map(function ($value, $key) {
+        return ['label' => $key, 'confidence' => $value];
+    })->first();
+
+    // Simpan hasil ke dalam array untuk dikirim ke view
+    $analysisResult = (object)[
+        'name' => $request->name,
+        'age' => $request->age,
+        'gender' => $request->gender,
+        'predicted_class' => $topPrediction['label'],
+        'confidence' => $topPrediction['confidence'],
+        'image_path' => $imagePath,
+        'description' => 'Penjelasan tentang ' . $topPrediction['label'] . ' akan ditampilkan di sini.',
+        'recommendation' => 'Rekomendasi perawatan untuk ' . $topPrediction['label'] . ' bisa ditambahkan di sini.',
+    ];
+
+    return view('dashboard.detection', compact('analysisResult'));
+}
+
+
     public function save(Request $request)
     {
         $request->validate([

@@ -83,6 +83,15 @@
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary btn-large" id="submitBtn"><i class="fas fa-search"></i> Analisis Sekarang</button>
                 </div>
+
+                @if(session('analysisResult'))
+                    <div class="session-result" style="margin-top: 20px;">
+                        <h4>Hasil dari Session</h4>
+                        <p>Prediksi: {{ session('analysisResult')['label'] }}</p>
+                        <p>Confidence: {{ number_format(session('analysisResult')['confidence'] * 100, 2) }}%</p>
+                    </div>
+                @endif
+
             </form>
         </div>
     </div>
@@ -117,15 +126,10 @@
                             </div>
                         </div>
                     </div>
-
-                    {{-- ================================================================== --}}
-                    {{-- KODE BARU: Menambahkan bagian untuk menampilkan deskripsi/ringkasan --}}
-                    {{-- ================================================================== --}}
                     <div class="description-section">
                         <h4>Penjelasan Penyakit</h4>
                         <div class="description-content">{!! $analysisResult->description !!}</div>
                     </div>
-                    {{-- ================================================================== --}}
 
                     <div class="recommendation-section">
                         <h4>Rekomendasi</h4>
@@ -141,7 +145,6 @@
                             <input type="hidden" name="predicted_class" value="{{ $analysisResult->predicted_class }}">
                             <input type="hidden" name="confidence" value="{{ $analysisResult->confidence }}">
                             <input type="hidden" name="image_path" value="{{ $analysisResult->image_path }}">
-                            {{-- KODE BARU: Menambahkan input hidden untuk description --}}
                             <input type="hidden" name="description" value="{{ $analysisResult->description }}">
                             <input type="hidden" name="recommendation" value="{{ $analysisResult->recommendation }}">
                             <button type="submit" class="btn btn-secondary"><i class="fas fa-save"></i> Simpan Hasil</button>
