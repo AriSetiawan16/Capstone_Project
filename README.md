@@ -64,34 +64,34 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 ## Capstone Project - Laravel Web Application
 
-### 1. Clone Repositori
+1. Clone Repositori
 
 ```bash
 git clone https://github.com/AriSetiawan16/Capstone_Project.git
 cd Capstone_Project
 
-### 2. Install Dependensi
+2. Install Dependensi
 
 composer install
 npm install
 
-### 3. Generate Key
+3. Generate Key
 
 php artisan key:generate
 
-### 4. Konfigurasi Database
+4. Konfigurasi Database
 
 // sesuaikan dengan konfigurasi database
 DB_DATABASE=
 DB_USERNAME=
 DB_PASSWORD=
 
-### 5. Migrasi dan Link 
+5. Migrasi dan Link 
 
 php artisan migrate
 php artisan storage:link
 
-### 6. Jalankan Server
+6. Jalankan Server
 
 npm run dev
 php artisan serve
