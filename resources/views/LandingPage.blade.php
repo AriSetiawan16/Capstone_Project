@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
-@vite('resources/css/Landingpage.css')
-@vite('resources/js/Landingpage.js')
+@vite('resources/css/LandingPage.css')
+@vite('resources/js/LandingPage.js')
 <nav class="navbar">
     <div class="container">
         <a href="#" class="logo">SmartDerm</a>
