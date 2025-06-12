@@ -42,6 +42,8 @@ RUN mkdir -p storage/framework/cache/data \
     && chmod -R 775 storage bootstrap/cache \
     && chown -R www-data:www-data storage bootstrap/cache
 
+RUN php artisan storage:link
+
 RUN chown -R www-data:www-data /var/www/html
 
 CMD ["/bin/bash", "-c", "php artisan config:clear && php artisan migrate --force && apache2-foreground"]
