@@ -28,11 +28,22 @@ RUN composer install --no-dev --optimize-autoloader
 # Install Node.js dependencies & build
 RUN npm install --legacy-peer-deps --no-cache && npm run build
 
-# Berikan permission pada storage dan bootstrap/cache
-RUN chmod -R 777 storage bootstrap/cache
-
 # Aktifkan mod_rewrite untuk Laravel routing
 RUN a2enmod rewrite
 
-# Jalankan migrasi database dan start Apache
-CMD php artisan migrate --force && apache2-foreground
+COPY apache/000-default.conf /etc/apache2/sites-available/000-default.conf
+
+# Aktifkan Laravel mod_rewrite
+RUN echo '<Directory /var/www/html/public>\n\
+    AllowOverride All\n\
+</Directory>' >> /etc/apache2/apache2.conf
+
+RUN mkdir -p storage/framework/cache/data \
+    && chmod -R 775 storage bootstrap/cache \
+    && chown -R www-data:www-data storage bootstrap/cache
+
+RUN chown -R www-data:www-data /var/www/html
+
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+CMD ["/entrypoint.sh"]
