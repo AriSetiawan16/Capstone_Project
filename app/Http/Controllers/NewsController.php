@@ -37,41 +37,43 @@ class NewsController extends Controller
         return view('dashboard.news', compact('news'));
     }
 
-    public function show($id)
+    public function show(\Illuminate\Http\Request $request)
     {
-        $decodedUrl = urldecode($id);
-
+        $decodedUrl = $request->query('url'); // baca dari ?url=
+    
+        if (!$decodedUrl) {
+            abort(400, 'Parameter URL tidak ditemukan.');
+        }
+    
         $response = Http::get('https://api-berita-indonesia.vercel.app/merdeka/sehat/');
-
+    
         if ($response->successful()) {
             $data = $response->json();
             $news = collect($data['data']['posts'] ?? [])->map(function ($item) {
-                // Slugify untuk gambar detail
-                $slug = Str::slug($item['title'], '-');
+                $slug = \Str::slug($item['title'], '-');
                 $filename = 'images/' . $slug . '.jpg';
-
-                if (File::exists(public_path($filename))) {
-                    $item['local_thumbnail'] = $filename;
-                } else {
-                    $item['local_thumbnail'] = 'images/placeholder-news.jpg';
-                }
-
+    
+                $item['local_thumbnail'] = \File::exists(public_path($filename))
+                    ? $filename
+                    : 'images/placeholder-news.jpg';
+    
                 return $item;
             });
-
+    
             $article = $news->first(function ($item) use ($decodedUrl) {
                 return $item['link'] === $decodedUrl;
             });
-
+    
             if ($article) {
                 return view('dashboard.news-detail', ['newsItem' => $article]);
             }
-
+    
             abort(404, 'Artikel tidak ditemukan.');
         }
-
+    
         abort(500, 'Gagal mengambil data dari API');
     }
+
 }
 
 //     public function show($id)
