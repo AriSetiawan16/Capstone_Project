@@ -7,7 +7,7 @@ FROM php:8.3-apache
 # Install system dependencies & PHP extensions
 RUN apt-get update && apt-get install -y \
     unzip git curl libpng-dev libonig-dev libxml2-dev zip \
-    gnupg lsb-release ca-certificates \
+    gnupg lsb-release ca-certificates netcat \
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd \
     && curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
     && apt-get install -y nodejs \
@@ -19,29 +19,34 @@ WORKDIR /var/www/html
 # Copy composer
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
-# Copy project
+# Copy project files
 COPY . .
 
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# Install Node.js dependencies & build
+# Install Node.js dependencies & build assets
 RUN npm install --legacy-peer-deps --no-cache && npm run build
 
-# Aktifkan mod_rewrite untuk Laravel routing
+# Enable Laravel-friendly Apache configuration
 RUN a2enmod rewrite
 
 COPY apache/000-default.conf /etc/apache2/sites-available/000-default.conf
 
-# Aktifkan Laravel mod_rewrite
+# Tambahkan AllowOverride untuk public folder Laravel
 RUN echo '<Directory /var/www/html/public>\n\
     AllowOverride All\n\
 </Directory>' >> /etc/apache2/apache2.conf
 
+# Set permissions
 RUN mkdir -p storage/framework/cache/data \
     && chmod -R 775 storage bootstrap/cache \
-    && chown -R www-data:www-data storage bootstrap/cache
+    && chown -R www-data:www-data storage bootstrap/cache \
+    && chown -R www-data:www-data /var/www/html
 
-RUN chown -R www-data:www-data /var/www/html
+# Tambahkan custom entrypoint
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
-CMD /bin/bash -c "until nc -z -v -w30 mysql 3306; do echo 'Waiting for MySQL...'; sleep 5; done && php artisan config:clear && php artisan migrate --force && apache2-foreground"
+# Jalankan entrypoint
+CMD ["/entrypoint.sh"]
