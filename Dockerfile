@@ -34,5 +34,10 @@ RUN chmod -R 777 storage bootstrap/cache
 # Aktifkan mod_rewrite untuk Laravel routing
 RUN a2enmod rewrite
 
+# Aktifkan Laravel mod_rewrite
+RUN echo '<Directory /var/www/html/public>\n\
+    AllowOverride All\n\
+</Directory>' >> /etc/apache2/apache2.conf
+
 # Jalankan migrasi database dan start Apache
 CMD php artisan migrate --force && apache2-foreground
