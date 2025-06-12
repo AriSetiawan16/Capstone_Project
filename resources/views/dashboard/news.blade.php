@@ -33,10 +33,9 @@
                         <i class="fas fa-calendar"></i>
                         {{ date('d M Y', strtotime($news[0]['pubDate'])) }}
                     </span>
-                    <a href="{{ route('news.show', ['id' => urlencode($news[0]['link'])]) }}" class="read-link">
+                    <a href="{{ route('news.show', ['url' => urlencode($news[0]['link'])]) }}" class="read-link">
                         Baca Selengkapnya <i class="fas fa-arrow-right"></i>
                     </a>
-
                 </div>
             </div>
         </div>
