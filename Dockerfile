@@ -34,6 +34,8 @@ RUN chmod -R 777 storage bootstrap/cache
 # Aktifkan mod_rewrite untuk Laravel routing
 RUN a2enmod rewrite
 
+COPY apache/000-default.conf /etc/apache2/sites-available/000-default.conf
+
 # Aktifkan Laravel mod_rewrite
 RUN echo '<Directory /var/www/html/public>\n\
     AllowOverride All\n\
