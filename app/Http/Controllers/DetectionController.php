@@ -17,51 +17,49 @@ class DetectionController extends Controller
         return view('dashboard.detection', compact('analysisResult'));
     }
 
- public function analyze(Request $request)
-{
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'age' => 'required|integer|min:1|max:120',
-        'gender' => 'required|in:male,female',
-        'image' => 'required|image|mimes:jpg,jpeg,png,gif|max:2048',
-    ]);
+    public function analyze(Request $request, RecommendationService $recommendationService)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'age' => 'required|integer|min:1|max:120',
+            'gender' => 'required|in:male,female',
+            'image' => 'required|image|mimes:jpg,jpeg,png,gif|max:2048',
+        ]);
 
-    $image = $request->file('image');
+        $image = $request->file('image');
+        $imagePath = $image->store('detections', 'public');
 
-    // Simpan gambar ke storage
-    $imagePath = $image->store('detections', 'public');
+        $response = Http::attach(
+            'file',
+            file_get_contents($image->getRealPath()),
+            $image->getClientOriginalName()
+        )->post('https://amdzz-skindisease-docker.hf.space/predict/');
 
-    $response = Http::attach(
-        'file',
-        file_get_contents($image->getRealPath()),
-        $image->getClientOriginalName()
-    )->post('https://amdzz-skindisease-docker.hf.space/predict/');
+        if (!$response->successful()) {
+            return redirect()->back()->withErrors(['error' => 'Proses prediksi gagal. Silakan coba lagi.']);
+        }
 
-    if (!$response->successful()) {
-        return redirect()->back()->withErrors(['error' => 'Proses prediksi gagal. Silakan coba lagi.']);
+        $result = $response->json();
+
+        $topPrediction = collect($result)->sortDesc()->take(1)->map(function ($value, $key) {
+            return ['label' => $key, 'confidence' => $value];
+        })->first();
+
+        $diseaseInfo = $recommendationService->getDiseaseInfo($topPrediction['label']);
+
+        $analysisResult = (object)[
+            'name' => $request->name,
+            'age' => $request->age,
+            'gender' => $request->gender,
+            'predicted_class' => $topPrediction['label'],
+            'confidence' => $topPrediction['confidence'],
+            'image_path' => $imagePath,
+            'description' => $diseaseInfo['description'],      
+            'recommendation' => $diseaseInfo['recommendation'], 
+        ];
+
+        return view('dashboard.detection', compact('analysisResult'));
     }
-
-    $result = $response->json();
-
-    // Ambil label dengan confidence paling tinggi
-    $topPrediction = collect($result)->sortDesc()->take(1)->map(function ($value, $key) {
-        return ['label' => $key, 'confidence' => $value];
-    })->first();
-
-    // Simpan hasil ke dalam array untuk dikirim ke view
-    $analysisResult = (object)[
-        'name' => $request->name,
-        'age' => $request->age,
-        'gender' => $request->gender,
-        'predicted_class' => $topPrediction['label'],
-        'confidence' => $topPrediction['confidence'],
-        'image_path' => $imagePath,
-        'description' => 'Penjelasan tentang ' . $topPrediction['label'] . ' akan ditampilkan di sini.',
-        'recommendation' => 'Rekomendasi perawatan untuk ' . $topPrediction['label'] . ' bisa ditambahkan di sini.',
-    ];
-
-    return view('dashboard.detection', compact('analysisResult'));
-}
 
 
     public function save(Request $request)
