@@ -4,7 +4,7 @@
 /public/storage
 /storage/*.key
 /storage/pail
-/public/.htaccess
+!public/.htaccess
 /vendor
 .env
 .env.backup
