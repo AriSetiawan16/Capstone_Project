@@ -41,5 +41,7 @@ RUN echo '<Directory /var/www/html/public>\n\
     AllowOverride All\n\
 </Directory>' >> /etc/apache2/apache2.conf
 
+RUN chown -R www-data:www-data /var/www/html
+
 # Jalankan migrasi database dan start Apache
 CMD php artisan migrate --force && apache2-foreground
