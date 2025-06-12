@@ -33,8 +33,9 @@
                         <i class="fas fa-calendar"></i>
                         {{ date('d M Y', strtotime($news[0]['pubDate'])) }}
                     </span>
-                    <a href="{{ route('news.show', ['id' => urlencode($news[0]['link'])]) }}" class="read-link">
-                        Baca Selengkapnya <i class="fas fa-arrow-right"></i>
+                     <a href="{{ $news[0]['link'] }}" class="read-link" target="_blank" rel="noopener noreferrer">
+                        Baca
+                        <i class="fas fa-external-link-alt"></i>
                     </a>
 
                 </div>
@@ -49,28 +50,7 @@
         <!-- Categories Filter -->
         <div class="filter-section">
             <h3>Berita Kesehatan</h3>
-            {{-- <div class="category-filters">
-                <button class="filter-btn active" data-category="all">
-                    <i class="fas fa-th"></i>
-                    Semua
-                </button>
-                <button class="filter-btn" data-category="Technology">
-                    <i class="fas fa-microchip"></i>
-                    Teknologi
-                </button>
-                <button class="filter-btn" data-category="Health Tips">
-                    <i class="fas fa-heart"></i>
-                    Tips Kesehatan
-                </button>
-                <button class="filter-btn" data-category="Education">
-                    <i class="fas fa-graduation-cap"></i>
-                    Edukasi
-                </button>
-                <button class="filter-btn" data-category="Prevention">
-                    <i class="fas fa-shield-alt"></i>
-                    Pencegahan
-                </button>
-            </div> --}}
+           
         </div>
 
         <!-- News Grid -->

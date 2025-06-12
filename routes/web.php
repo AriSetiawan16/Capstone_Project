@@ -43,10 +43,7 @@ Route::middleware('auth')->group(function () {
 
     // News routes
     Route::get('/news', [NewsController::class, 'index'])->name('news');
-    Route::get('/news/detail/{id}', [NewsController::class, 'show'])
-            ->where('id', '.*')
-            ->name('news.show');
-
+  
 
     // Profile routes (simplified)
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
