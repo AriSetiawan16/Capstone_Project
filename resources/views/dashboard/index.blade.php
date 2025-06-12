@@ -20,7 +20,7 @@
     </form>
   </div>
 
-  <div class="hamburger" onclick="toggleSidebar()">
+  <div id="hamburger" class="hamburger"> 
     <i class="fas fa-bars"></i>
   </div>
 </header>
