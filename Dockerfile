@@ -44,4 +44,6 @@ RUN mkdir -p storage/framework/cache/data \
 
 RUN chown -R www-data:www-data /var/www/html
 
-CMD php artisan migrate --force && apache2-foreground
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+CMD ["/entrypoint.sh"]
