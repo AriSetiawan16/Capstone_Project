@@ -28,10 +28,6 @@ RUN composer install --no-dev --optimize-autoloader
 # Install Node.js dependencies & build
 RUN npm install --legacy-peer-deps --no-cache && npm run build
 
-# Berikan permission pada storage dan bootstrap/cache
-RUN chmod -R 775 storage bootstrap/cache \
-    && chown -R www-data:www-data storage bootstrap/cache
-
 # Aktifkan mod_rewrite untuk Laravel routing
 RUN a2enmod rewrite
 
@@ -42,7 +38,13 @@ RUN echo '<Directory /var/www/html/public>\n\
     AllowOverride All\n\
 </Directory>' >> /etc/apache2/apache2.conf
 
+RUN mkdir -p storage/framework/cache/data \
+    && chmod -R 775 storage bootstrap/cache \
+    && chown -R www-data:www-data storage bootstrap/cache
+
+# Generate APP_KEY jika belum
+RUN php artisan key:generate
+
 RUN chown -R www-data:www-data /var/www/html
 
-# Jalankan migrasi database dan start Apache
-CMD php artisan migrate --force && apache2-foreground
+CMD ["/bin/bash", "-c", "php artisan config:clear && php artisan migrate --force && apache2-foreground"]
