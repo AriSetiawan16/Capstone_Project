@@ -12,7 +12,7 @@ class NewsController extends Controller
         $response = Http::withOptions([
             'verify' => false, // hanya untuk testing
             'timeout' => 10,
-        ])->get('http://localhost:3000/merdeka/sehat/');
+        ])->get('https://api-berita-indonesia.vercel.app/merdek a/sehat/');
 
         if ($response->successful()) {
             $data = $response->json();
@@ -41,7 +41,7 @@ class NewsController extends Controller
     {
         $decodedUrl = urldecode($id);
 
-        $response = Http::get('http://localhost:3000/merdeka/sehat/');
+        $response = Http::get('https://api-berita-indonesia.vercel.app/merdeka/sehat/');
 
         if ($response->successful()) {
             $data = $response->json();
