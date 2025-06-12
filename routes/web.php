@@ -22,9 +22,9 @@ Route::get('/auth', function () {
 Route::get('/', [LandingPageController::class, 'index'])->name('home');
 
 // Auth
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('auth');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
-Route::get('/register', [AuthController::class, 'showLoginForm'])->name('register.form');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Dashboard - hanya bisa diakses setelah login
