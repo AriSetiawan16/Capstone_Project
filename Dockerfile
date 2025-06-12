@@ -31,6 +31,9 @@ RUN npm install --legacy-peer-deps --no-cache && npm run build
 # Berikan permission pada storage dan bootstrap/cache
 RUN chmod -R 777 storage bootstrap/cache
 
+RUN chmod -R 775 storage bootstrap/cache && \
+    chown -R www-data:www-data storage bootstrap/cache
+
 # Aktifkan mod_rewrite untuk Laravel routing
 RUN a2enmod rewrite
 
