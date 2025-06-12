@@ -44,12 +44,4 @@ RUN mkdir -p storage/framework/cache/data \
 
 RUN chown -R www-data:www-data /var/www/html
 
-CMD ["/bin/bash", "-c", "
-  until nc -z -v -w30 mysql 3306; do
-    echo 'Waiting for MySQL...';
-    sleep 5;
-  done &&
-  php artisan config:clear &&
-  php artisan migrate --force &&
-  apache2-foreground
-"]
+CMD /bin/bash -c "until nc -z -v -w30 mysql 3306; do echo 'Waiting for MySQL...'; sleep 5; done && php artisan config:clear && php artisan migrate --force && apache2-foreground"
