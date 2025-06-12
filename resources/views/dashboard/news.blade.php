@@ -37,7 +37,6 @@
                         Baca
                         <i class="fas fa-external-link-alt"></i>
                     </a>
-
                 </div>
             </div>
         </div>
