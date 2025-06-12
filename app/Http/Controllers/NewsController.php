@@ -12,7 +12,7 @@ class NewsController extends Controller
         $response = Http::withOptions([
             'verify' => false, // hanya untuk testing
             'timeout' => 10,
-        ])->get('https://api-berita-indonesia.vercel.app/merdek a/sehat/');
+        ])->get('https://api-berita-indonesia.vercel.app/merdeka/sehat/');
 
         if ($response->successful()) {
             $data = $response->json();
