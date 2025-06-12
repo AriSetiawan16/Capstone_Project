@@ -42,9 +42,6 @@ RUN mkdir -p storage/framework/cache/data \
     && chmod -R 775 storage bootstrap/cache \
     && chown -R www-data:www-data storage bootstrap/cache
 
-# Generate APP_KEY jika belum
-RUN php artisan key:generate
-
 RUN chown -R www-data:www-data /var/www/html
 
 CMD ["/bin/bash", "-c", "php artisan config:clear && php artisan migrate --force && apache2-foreground"]
