@@ -4,6 +4,9 @@ storage/logs
 storage/framework/cache
 storage/framework/sessions
 storage/framework/views
+!storage/
+!storage/**
+!bootstrap/cache/
 !public/.htaccess
 .env
 .git
